@@ -1,5 +1,6 @@
 import 'package:app/src/bloc/position_bloc.dart';
 import 'package:app/src/components/count.dart';
+import 'package:app/src/components/record.dart';
 import 'package:flutter/material.dart';
 
 late PositionBloc positionBloc;
@@ -56,6 +57,9 @@ class _PositionState extends State<Position> {
                       focusNode: focus,
                       controller: textEditingController,
                       onChanged: (value) {
+                        if (!stopwatch.isRunning) {
+                          stopwatch.start();
+                        }
                         if (textEditingController.text ==
                             snapshot.data[0].letter) {
                           positionBloc.next();
@@ -63,7 +67,7 @@ class _PositionState extends State<Position> {
                         } else {
                           countBloc.decrement();
                         }
-                        if (100 == countBloc.getCounter()) {
+                        if (countBloc.getMax == countBloc.getCount) {
                           Navigator.pop(context);
                         }
                         textEditingController.text = '';

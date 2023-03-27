@@ -1,10 +1,12 @@
 import 'package:app/src/bloc/count_bloc.dart';
+import 'package:app/src/components/record.dart';
 import 'package:flutter/material.dart';
 
 late CountBloc countBloc;
 
 class Count extends StatefulWidget {
-  const Count({super.key});
+  final int max;
+  const Count({super.key, required this.max});
 
   @override
   State<Count> createState() => _CountState();
@@ -15,7 +17,7 @@ class _CountState extends State<Count> {
   void initState() {
     super.initState();
     countBloc = CountBloc();
-    countBloc.init();
+    countBloc.init(widget.max);
   }
 
   @override
@@ -32,9 +34,11 @@ class _CountState extends State<Count> {
         int count = snapshot.data ?? 0;
         return Column(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('progress: $count/100', textScaleFactor: 1.5),
+            Text('progress: $count/${countBloc.getMax}', textScaleFactor: 1.5),
+            const SizedBox(height: 10),
+            const Record(),
           ],
         );
       },

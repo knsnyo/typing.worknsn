@@ -11,3 +11,5 @@ class Setting extends StatelessWidget {
     );
   }
 }
+
+// https://pub.dev/packages/syncfusion_flutter_charts

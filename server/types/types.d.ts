@@ -12,9 +12,9 @@ interface IShort {
   short: string;
 }
 
-interface ILong {
-  title: string;
-  long: string;
+interface IRecord {
+  user: number;
+  speed: number;
 }
 
-export { IUser, IWord, IShort, ILong };
+export { IUser, IWord, IShort, IRecord };

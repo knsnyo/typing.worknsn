@@ -4,7 +4,7 @@ import shortController from '@/controller/shortController';
 const shortRouter = Router();
 
 shortRouter
-  .route('/')
+  .route('/shorts')
   .get(shortController.select) //
   .post(shortController.insert);
 

@@ -3,6 +3,6 @@ import positonController from '@/controller/positionController';
 
 const positionRouter = Router();
 
-positionRouter.get('/:level', positonController.level);
+positionRouter.route('/positions/:level').get(positonController.level);
 
 export default positionRouter;

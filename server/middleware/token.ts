@@ -12,7 +12,7 @@ const Token = {
       },
       process.env.JWT_ACCESS!,
       {
-        expiresIn: '1m',
+        expiresIn: '2h',
       }
     );
     next();
@@ -46,7 +46,7 @@ const Token = {
   verifyRefresh: async (req: Request, res: Response, next: NextFunction) => {
     const token = req.get('refreshToken')!;
     try {
-      const data = verify(token, process.env.JWT_REFRESH!);
+      verify(token, process.env.JWT_REFRESH!);
       next();
     } catch (err) {
       res.status(SC.UNAUTHORIZED.status).json(SC.UNAUTHORIZED);

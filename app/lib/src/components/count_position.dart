@@ -13,7 +13,7 @@ class CountPosition extends StatelessWidget {
       children: const [
         Flexible(
           flex: 1,
-          child: Count(),
+          child: Count(max: 100),
         ),
         Flexible(
           flex: 2,
