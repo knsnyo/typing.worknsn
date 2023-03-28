@@ -32,7 +32,7 @@
   "author": "knsnyo",
   "license": "ISC",
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register index.ts",
-    "start:dev": "nodemon -r tsconfig-paths/register index.ts"
+    "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "start:dev": "nodemon -r tsconfig-paths/register src/index.ts"
   }
 }
