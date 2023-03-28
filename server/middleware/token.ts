@@ -16,10 +16,6 @@ const Token = {
       }
     );
     next();
-    console.log(`=================`);
-    console.log('create access');
-    console.log(req.body);
-    console.log(`=================`);
   },
 
   createRefresh: (req: Request, res: Response, next: NextFunction): void => {
@@ -28,22 +24,15 @@ const Token = {
       expiresIn: '15d',
     });
     next();
-    console.log('create refresh');
   },
 
   verifyAccess: (req: Request, res: Response, next: NextFunction): void => {
     const token: string = req.body.accessToken ?? req.get('accessToken');
-    console.log(`=================`);
-    console.log(req.body.accessToken);
-    console.log(req.get('accessToken'));
-    console.log(token);
-    console.log(`=================`);
     try {
       const data: JwtPayload = verify(token, process.env.JWT_ACCESS!) as JwtPayload;
       req.body.idx = data.idx;
       next('route');
     } catch (err) {
-      console.log('access token expired');
       next();
     }
   },
@@ -52,15 +41,10 @@ const Token = {
     console.log('verify refresh');
     const token: string = req.get('refreshToken')!;
     try {
-      const data: JwtPayload | string = verify(token, process.env.JWT_REFRESH!);
-      console.log(data);
-      req.body = { ...req.body };
-      console.log(`=================`);
-      console.log(req.body);
-      console.log(`=================`);
+      const data: JwtPayload = verify(token, process.env.JWT_REFRESH!) as JwtPayload;
+      req.body = { ...req.body, idx: data.idx };
       next();
     } catch (err) {
-      console.log('refresh token expired');
       return res.status(SC.UNAUTHORIZED.status).json(SC.UNAUTHORIZED);
     }
   },

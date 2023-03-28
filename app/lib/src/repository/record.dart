@@ -8,14 +8,11 @@ class RecordRepository {
   static Future<Response?> insert(int speed) async {
     try {
       Map<String, String> tokens = await getTokens();
-      print(tokens['accessToken']);
       Response res = await Dio(BaseOptions(headers: tokens))
           .post(url, data: {'speed': speed});
-      print(res);
       if (null != res.data['accessToken']) {
         await setAccessToken(res.data['accessToken']);
         tokens = await getTokens();
-        print(tokens['accessToken']);
       }
       return res;
     } catch (err) {
