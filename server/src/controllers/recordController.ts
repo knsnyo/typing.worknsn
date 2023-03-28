@@ -30,7 +30,7 @@ const recordController = {
       }
       return res.status(SC.OK.status).json({
         ...SC.OK,
-        ...records,
+        records: records,
         accessToken: req.body.accessToken,
       });
     } catch (err) {

@@ -13,7 +13,7 @@ const Record = {
   },
   select: async (idx: number): Promise<Array<IRecord>> => {
     try {
-      const [records]: Array<Array<IRecord>> = await db.query(queries.record.select, [idx]);
+      const records: Array<IRecord> = await db.query(queries.record.select, [idx]);
       return records;
     } catch (err: unknown) {
       throw new QueryError(`${err}`);
