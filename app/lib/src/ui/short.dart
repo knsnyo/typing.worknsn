@@ -18,7 +18,7 @@ class Short extends StatelessWidget {
           children: const [
             Flexible(
               flex: 1,
-              child: Count(max: 10),
+              child: Count(max: 1),
             ),
             Flexible(flex: 3, child: ShortType()),
           ],

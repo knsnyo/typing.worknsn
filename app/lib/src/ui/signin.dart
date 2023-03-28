@@ -1,9 +1,8 @@
 import 'package:app/src/components/menu_button.dart';
-import 'package:app/src/repository/user.dart';
+import 'package:app/src/navigation/navigation.dart';
 import 'package:app/src/utils/app_bar.dart';
 import 'package:app/src/utils/padding.dart';
 import 'package:app/src/utils/snackbar.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class Signin extends StatefulWidget {
@@ -88,15 +87,15 @@ class _SigninState extends State<Signin> {
                         if (_formKey.currentState!.validate()) {
                           String id = _idController.text;
                           String password = _passwordController.text;
-                          Response? res =
-                              await UserRepository.signin(id, password);
-                          if (200 != res?.data['status']) {
+                          await authBloc.signin(id, password);
+                          if (!authBloc.getUser) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(failSnackbar('Sign In Fail'));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 successSnackbar('Sign In Success'));
-                            Navigator.pop(context);
+                            Navigator.of(context)
+                                .pushNamedAndRemoveUntil('/', (route) => false);
                           }
                         }
                       },

@@ -4,7 +4,7 @@ import { JwtPayload, sign, verify } from 'jsonwebtoken';
 import SC from '@/utils/StatusCode';
 
 const Token = {
-  createAccess: (req: Request, res: Response, next: NextFunction) => {
+  createAccess: (req: Request, res: Response, next: NextFunction): void => {
     req.body.accessToken = sign(
       {
         idx: req.body.idx,
@@ -12,44 +12,56 @@ const Token = {
       },
       process.env.JWT_ACCESS!,
       {
-        expiresIn: '2h',
+        expiresIn: '1m',
       }
     );
     next();
+    console.log(`=================`);
+    console.log('create access');
+    console.log(req.body);
+    console.log(`=================`);
   },
 
-  createRefresh: (req: Request, res: Response, next: NextFunction) => {
-    req.body.refreshToken = sign(
-      {
-        idx: req.body.idx,
-        id: req.body.id,
-      },
-      process.env.JWT_REFRESH!,
-      {
-        expiresIn: '15d',
-      }
-    );
+  createRefresh: (req: Request, res: Response, next: NextFunction): void => {
+    const { accessToken, ...others } = req.body;
+    req.body.refreshToken = sign(others, process.env.JWT_REFRESH!, {
+      expiresIn: '15d',
+    });
     next();
+    console.log('create refresh');
   },
 
-  verifyAccess: async (req: Request, res: Response, next: NextFunction) => {
+  verifyAccess: (req: Request, res: Response, next: NextFunction): void => {
+    const token: string = req.body.accessToken ?? req.get('accessToken');
+    console.log(`=================`);
+    console.log(req.body.accessToken);
+    console.log(req.get('accessToken'));
+    console.log(token);
+    console.log(`=================`);
     try {
-      const token = req.body.accessToken ?? req.get('accessToken');
-      const data = verify(token, process.env.JWT_ACCESS!) as JwtPayload;
+      const data: JwtPayload = verify(token, process.env.JWT_ACCESS!) as JwtPayload;
       req.body.idx = data.idx;
       next('route');
     } catch (err) {
+      console.log('access token expired');
       next();
     }
   },
 
-  verifyRefresh: async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.get('refreshToken')!;
+  verifyRefresh: (req: Request, res: Response, next: NextFunction): Response | void => {
+    console.log('verify refresh');
+    const token: string = req.get('refreshToken')!;
     try {
-      verify(token, process.env.JWT_REFRESH!);
+      const data: JwtPayload | string = verify(token, process.env.JWT_REFRESH!);
+      console.log(data);
+      req.body = { ...req.body };
+      console.log(`=================`);
+      console.log(req.body);
+      console.log(`=================`);
       next();
     } catch (err) {
-      res.status(SC.UNAUTHORIZED.status).json(SC.UNAUTHORIZED);
+      console.log('refresh token expired');
+      return res.status(SC.UNAUTHORIZED.status).json(SC.UNAUTHORIZED);
     }
   },
 };

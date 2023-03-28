@@ -1,4 +1,5 @@
 import 'package:app/src/components/count.dart';
+import 'package:app/src/components/finish_dialog.dart';
 import 'package:app/src/components/record.dart';
 import 'package:flutter/material.dart';
 import 'package:app/src/bloc/word_bloc.dart';
@@ -60,11 +61,16 @@ class _WordState extends State<Word> {
                       }
                       if (textEditingController.text == snapshot.data[0].word) {
                         wordBloc.next();
-                        textEditingController.text = '';
                         countBloc.increment();
+                        countBloc.typing(textEditingController.text.length);
+                        textEditingController.text = '';
                       }
                       if (countBloc.getMax == countBloc.getCount) {
-                        Navigator.pop(context);
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              const FinishDialog(),
+                        );
                       }
                     },
                   )

@@ -10,7 +10,7 @@ class WordBloc {
 
   Stream get word => _wordSubject.stream;
 
-  init() async {
+  void init() async {
     try {
       _current = await WordRepository.get();
       _next = await WordRepository.get();
@@ -21,7 +21,7 @@ class WordBloc {
     }
   }
 
-  next() async {
+  void next() async {
     try {
       _current = _next;
       _next = await WordRepository.get();
@@ -32,7 +32,7 @@ class WordBloc {
     }
   }
 
-  dispose() {
+  void dispose() {
     _wordSubject.close();
   }
 }

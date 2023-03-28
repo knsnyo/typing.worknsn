@@ -1,7 +1,7 @@
 import { createPool, Pool } from 'mysql2/promise';
 import 'dotenv/config';
 
-const config = {
+const config: Object = {
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT!),
   database: process.env.DB_NAME,

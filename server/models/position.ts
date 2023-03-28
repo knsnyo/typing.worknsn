@@ -1,4 +1,4 @@
-const alphabet = [
+const alphabet: Array<Array<string>> = [
   ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'],
   ['q', 'w', 'e', 'r'],
   ['u', 'i', 'o', 'p'],
@@ -9,9 +9,11 @@ const alphabet = [
 ];
 
 const Position = {
-  select: (level: number) => {
-    const random = Math.floor(Math.random() * alphabet.at(level)!.length);
-    return alphabet.at(level)!.at(random);
+  select: (level: number): string => {
+    const random: number = Math.floor(
+      Math.random() * alphabet.at(level)!.length
+    );
+    return alphabet.at(level)!.at(random)!;
   },
 };
 

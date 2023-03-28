@@ -10,7 +10,7 @@ class ShortBloc {
 
   Stream get short => _shortSubject.stream;
 
-  init() async {
+  void init() async {
     try {
       _current = await ShortRepository.get();
       _next = await ShortRepository.get();
@@ -21,7 +21,7 @@ class ShortBloc {
     }
   }
 
-  next() async {
+  void next() async {
     try {
       _current = _next;
       _next = await ShortRepository.get();
@@ -32,7 +32,7 @@ class ShortBloc {
     }
   }
 
-  dispose() {
+  void dispose() {
     _shortSubject.close();
   }
 }

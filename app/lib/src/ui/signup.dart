@@ -1,4 +1,4 @@
-import 'package:app/src/components/menu_button.dart';
+import 'package:app/src/navigation/navigation.dart';
 import 'package:app/src/repository/user.dart';
 import 'package:app/src/utils/app_bar.dart';
 import 'package:app/src/utils/padding.dart';
@@ -88,9 +88,8 @@ class _SignupState extends State<Signup> {
                         if (_formKey.currentState!.validate()) {
                           String id = _idController.text;
                           String password = _passwordController.text;
-                          Response? res =
-                              await UserRepository.signup(id, password);
-                          if (201 != res?.data['status']) {
+                          Response? res = await authBloc.signup(id, password);
+                          if (null == res) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(failSnackbar('Sign Up Fail'));
                           } else {

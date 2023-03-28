@@ -1,5 +1,6 @@
 import 'package:app/src/bloc/position_bloc.dart';
 import 'package:app/src/components/count.dart';
+import 'package:app/src/components/finish_dialog.dart';
 import 'package:app/src/components/record.dart';
 import 'package:flutter/material.dart';
 
@@ -64,11 +65,16 @@ class _PositionState extends State<Position> {
                             snapshot.data[0].letter) {
                           positionBloc.next();
                           countBloc.increment();
+                          countBloc.typing(1);
                         } else {
                           countBloc.decrement();
                         }
                         if (countBloc.getMax == countBloc.getCount) {
-                          Navigator.pop(context);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                const FinishDialog(),
+                          );
                         }
                         textEditingController.text = '';
                       },

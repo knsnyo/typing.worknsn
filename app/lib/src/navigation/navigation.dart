@@ -1,3 +1,4 @@
+import 'package:app/src/bloc/auth_bloc.dart';
 import 'package:app/src/ui/home.dart';
 import 'package:app/src/ui/position.dart';
 import 'package:app/src/ui/setting.dart';
@@ -7,8 +8,23 @@ import 'package:app/src/ui/signup.dart';
 import 'package:app/src/ui/word.dart';
 import 'package:flutter/material.dart';
 
-class Navigation extends StatelessWidget {
+late AuthBloc authBloc;
+
+class Navigation extends StatefulWidget {
   const Navigation({super.key});
+
+  @override
+  State<Navigation> createState() => _NavigationState();
+}
+
+class _NavigationState extends State<Navigation> {
+  @override
+  void initState() {
+    super.initState();
+    authBloc = AuthBloc();
+    authBloc.init();
+    authBloc.auto();
+  }
 
   @override
   Widget build(BuildContext context) {

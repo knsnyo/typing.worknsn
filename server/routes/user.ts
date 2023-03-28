@@ -4,20 +4,21 @@ import Token from '@/middleware/token';
 import Auth from '@/middleware/auth';
 import recordController from '@/controller/recordController';
 
-const userRouter = Router();
+const userRouter: Router = Router();
 
 userRouter
-  .route('/signin')
-  .post(
-    userController.signin,
-    Token.createAccess,
-    Token.createRefresh,
-    Auth.done
-  );
-userRouter.route('/signup').post(userController.signup);
+  .route('/signin') //
+  .get(Auth.auto, Token.createAccess, Token.createRefresh, Auth.done)
+  .post(userController.signin, Token.createAccess, Token.createRefresh, Auth.done);
 userRouter
-  .route('/:idx') // user index
-  .get(recordController.getInfo)
-  .post(recordController.insert);
+  .route('/signup') //
+  .post(userController.signup);
+
+userRouter
+  .route('') //
+  .get(Token.verifyAccess, Token.verifyRefresh, Token.createAccess, Token.verifyAccess)
+  .post(Token.verifyAccess, Token.verifyRefresh, Token.createAccess, Token.verifyAccess);
+
+userRouter.route('').get(recordController.getInfo).post(recordController.insert);
 
 export default userRouter;

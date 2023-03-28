@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-failSnackbar(String msg) => SnackBar(
+SnackBar failSnackbar(String msg) => SnackBar(
       content: Row(
         children: [
           const Icon(
@@ -15,7 +15,7 @@ failSnackbar(String msg) => SnackBar(
       backgroundColor: Colors.redAccent,
     );
 
-successSnackbar(String msg) => SnackBar(
+SnackBar successSnackbar(String msg) => SnackBar(
       content: Row(
         children: [
           const Icon(

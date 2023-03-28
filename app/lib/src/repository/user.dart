@@ -34,6 +34,19 @@ class UserRepository {
   static Future<void> signout() async {
     try {
       await removeToken();
-    } catch (err) {}
+    } catch (err) {
+      return;
+    }
+  }
+
+  static Future<Response?> auto() async {
+    try {
+      Map<String, String> tokens = await getTokens();
+      Response res = await Dio(BaseOptions(headers: tokens)).get('$url/signin');
+      await setToken(res.data['accessToken'], res.data['refreshToken']);
+      return res;
+    } catch (err) {
+      return null;
+    }
   }
 }

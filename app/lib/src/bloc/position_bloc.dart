@@ -11,7 +11,7 @@ class PositionBloc {
 
   Stream get position => _positionSubject.stream;
 
-  init(int level) async {
+  void init(int level) async {
     try {
       _level = level;
       _current = await PositionRepository.get(level);
@@ -23,7 +23,7 @@ class PositionBloc {
     }
   }
 
-  next() async {
+  void next() async {
     try {
       _current = _next;
       _next = await PositionRepository.get(_level);
@@ -34,7 +34,7 @@ class PositionBloc {
     }
   }
 
-  dispose() {
+  void dispose() {
     _positionSubject.close();
   }
 }

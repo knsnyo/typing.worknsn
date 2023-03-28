@@ -1,16 +1,17 @@
 import { Request, Response } from 'express';
 import SC from '@/utils/StatusCode';
 import Word from '@/models/word';
+import { IWord } from '@/types/types';
 
 const wordController = {
-  insert: async (req: Request, res: Response) => {
-    const { word } = req.body;
+  insert: async (req: Request, res: Response): Promise<Response> => {
+    const { word }: IWord = req.body;
     await Word.insert({ word: word });
-    res.status(SC.CREATED.status).json(SC.CREATED);
+    return res.status(SC.CREATED.status).json(SC.CREATED);
   },
-  select: async (req: Request, res: Response) => {
-    const [word] = await Word.select();
-    res.status(SC.OK.status).json(word);
+  select: async (req: Request, res: Response): Promise<Response> => {
+    const [word]: Array<IWord> = await Word.select();
+    return res.status(SC.OK.status).json(word);
   },
 };
 

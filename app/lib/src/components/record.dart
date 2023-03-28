@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 late Stopwatch stopwatch;
+late int total;
+late int minute;
+late int second;
 
 class Record extends StatefulWidget {
   const Record({super.key});
@@ -29,9 +32,9 @@ class _RecordState extends State<Record> {
     return StreamBuilder(
       stream: Stream.periodic(const Duration(milliseconds: 100)),
       builder: (context, snapshot) {
-        int total = (stopwatch.elapsedMilliseconds / 1000).floor();
-        int minute = total ~/ 60;
-        int second = total % 60;
+        total = (stopwatch.elapsedMilliseconds / 1000).floor();
+        minute = total ~/ 60;
+        second = total % 60;
         return Text(
           "${percent2D(minute)}:${percent2D(second)}",
           textScaleFactor: 1.5,
