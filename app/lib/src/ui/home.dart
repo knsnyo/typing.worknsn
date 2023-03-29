@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: const [
               Flexible(
-                flex: 2,
+                flex: 1,
                 child: Menu(),
               ),
               Flexible(

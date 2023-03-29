@@ -27,6 +27,12 @@ class _NavigationState extends State<Navigation> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    authBloc.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       builder: (context, child) => MediaQuery(

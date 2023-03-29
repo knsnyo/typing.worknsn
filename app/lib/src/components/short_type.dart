@@ -1,12 +1,12 @@
+import 'package:app/src/bloc/record_bloc.dart';
 import 'package:app/src/bloc/short_bloc.dart';
 import 'package:app/src/components/count.dart';
 import 'package:app/src/components/finish_dialog.dart';
 import 'package:app/src/components/record.dart';
-import 'package:app/src/navigation/navigation.dart';
-import 'package:app/src/repository/record.dart';
 import 'package:flutter/material.dart';
 
 late ShortBloc shortBloc;
+late RecordBloc recordBloc;
 
 class ShortType extends StatefulWidget {
   const ShortType({super.key});
@@ -24,6 +24,7 @@ class _ShortTypeState extends State<ShortType> {
     super.initState();
     shortBloc = ShortBloc();
     shortBloc.init();
+    recordBloc = RecordBloc();
   }
 
   @override
@@ -76,9 +77,6 @@ class _ShortTypeState extends State<ShortType> {
                       context: context,
                       builder: (BuildContext context) => const FinishDialog(),
                     );
-                    if (authBloc.getUser) {
-                      await RecordRepository.insert(speed);
-                    }
                   }
                 },
               ),

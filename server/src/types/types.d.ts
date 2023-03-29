@@ -27,6 +27,12 @@ interface IRecord {
   date?: Date;
 }
 
+interface IChulseok {
+  idx: number;
+  date: Date;
+  done: number;
+}
+
 interface IConfig {
   host: string;
   port?: number;
@@ -36,4 +42,4 @@ interface IConfig {
   multipleStatements: boolean;
 }
 
-export { IUser, IPosition, IWord, IShort, IRecord, IConfig };
+export { IUser, IPosition, IWord, IShort, IRecord, IChulseok, IConfig };

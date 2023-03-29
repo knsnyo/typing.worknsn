@@ -1,5 +1,4 @@
 import 'package:app/src/navigation/navigation.dart';
-import 'package:app/src/repository/user.dart';
 import 'package:app/src/utils/app_bar.dart';
 import 'package:app/src/utils/padding.dart';
 import 'package:app/src/utils/snackbar.dart';

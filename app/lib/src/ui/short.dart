@@ -18,7 +18,7 @@ class Short extends StatelessWidget {
           children: const [
             Flexible(
               flex: 1,
-              child: Count(max: 1),
+              child: Count(max: 1, category: 'short'),
             ),
             Flexible(flex: 3, child: ShortType()),
           ],

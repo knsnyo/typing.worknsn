@@ -6,7 +6,8 @@ late CountBloc countBloc;
 
 class Count extends StatefulWidget {
   final int max;
-  const Count({super.key, required this.max});
+  final String category;
+  const Count({super.key, required this.max, required this.category});
 
   @override
   State<Count> createState() => _CountState();
@@ -17,7 +18,7 @@ class _CountState extends State<Count> {
   void initState() {
     super.initState();
     countBloc = CountBloc();
-    countBloc.init(widget.max);
+    countBloc.init(widget.max, widget.category);
   }
 
   @override

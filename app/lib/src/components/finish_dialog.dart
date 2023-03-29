@@ -1,5 +1,7 @@
 import 'package:app/src/components/count.dart';
 import 'package:app/src/components/record.dart';
+import 'package:app/src/components/short_type.dart';
+import 'package:app/src/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 
 int speed = 0;
@@ -10,6 +12,7 @@ class FinishDialog extends AlertDialog {
   @override
   Widget build(BuildContext context) {
     speed = (countBloc.getType / total * 60).round();
+    insertRecord();
     return AlertDialog(
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,5 +34,12 @@ class FinishDialog extends AlertDialog {
         ),
       ],
     );
+  }
+
+  insertRecord() async {
+    if (authBloc.getUser && 'short' == countBloc.getCategory) {
+      // 이거 지금 하나씩 밀림
+      await recordBloc.insert(speed);
+    }
   }
 }

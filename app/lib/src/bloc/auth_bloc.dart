@@ -37,10 +37,10 @@ class AuthBloc {
   Future<void> signout() async {
     try {
       await UserRepository.signout();
-    } catch (err) {
-      //
-    } finally {
       _user = false;
+    } catch (err) {
+      _user = true;
+    } finally {
       _userSubject.sink.add(_user);
     }
   }
@@ -57,5 +57,9 @@ class AuthBloc {
     } finally {
       _userSubject.sink.add(_user);
     }
+  }
+
+  void dispose() {
+    _userSubject.close();
   }
 }

@@ -13,7 +13,7 @@ class CountWord extends StatelessWidget {
       children: const [
         Flexible(
           flex: 1,
-          child: Count(max: 100),
+          child: Count(max: 100, category: 'word'),
         ),
         Flexible(
           flex: 2,

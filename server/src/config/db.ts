@@ -31,7 +31,7 @@ class DB {
     let connection;
     try {
       connection = await this.pool.getConnection();
-      const [result] = await connection.query(sql, values);
+      const [result] = await connection.execute(sql, values);
       return result;
     } catch (err: unknown) {
       throw new DBError(`${err}`);

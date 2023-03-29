@@ -3,7 +3,7 @@ import 'package:app/src/storage/storage.dart';
 import 'package:dio/dio.dart';
 
 class RecordRepository {
-  static String url = 'http://0.0.0.0:5000/users';
+  static String url = 'http://0.0.0.0:5000/info/records';
 
   static Future<Response?> insert(int speed) async {
     try {
