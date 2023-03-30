@@ -1,4 +1,4 @@
-import { ParamsError } from '@/utils/Error';
+import { NotFoundError } from '@/utils/Error';
 
 const alphabet: Array<Array<string>> = [
   ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'],
@@ -16,7 +16,7 @@ const Position = {
       const random: number = Math.floor(Math.random() * alphabet[level].length);
       return alphabet[level][random];
     }
-    throw new ParamsError(`LEVEL IS INVALID`);
+    throw new NotFoundError(`LETTER IS NOT FOUND`);
   },
 };
 

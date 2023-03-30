@@ -1,6 +1,6 @@
 import Word from '@/models/Word';
 import { IWord } from '@/types/types';
-import { BodyError } from '@/utils/Error';
+import { BodyError, NotFoundError } from '@/utils/Error';
 
 const wordService = {
   insert: async ({ word }: IWord): Promise<void> => {
@@ -12,7 +12,7 @@ const wordService = {
   select: async (): Promise<IWord> => {
     const word = await Word.select();
     if (!word) {
-      throw new BodyError(`WORD IS NULL`);
+      throw new NotFoundError(`WORD IS NOT FOUND`);
     }
     return word;
   },

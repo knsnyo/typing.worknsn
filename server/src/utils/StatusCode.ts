@@ -1,32 +1,34 @@
-const SC = {
+import { IStatusCode } from '@/types/types';
+
+const StatusCode: { [key: string]: IStatusCode } = {
   OK: {
     status: 200,
-    message: 'OK',
+    information: 'OK',
   },
   CREATED: {
     status: 201,
-    message: 'CREATED',
+    information: 'CREATED',
   },
   BAD_REQUEST: {
     status: 400,
-    message: 'BAD_REQUEST',
+    information: 'BAD_REQUEST',
   },
   UNAUTHORIZED: {
     status: 401,
-    message: 'UNAUTHORIZED',
+    information: 'UNAUTHORIZED',
   },
   NOT_FOUND: {
     status: 404,
-    message: 'NOT FOUND',
+    information: 'NOT FOUND',
   },
   CONFLICT: {
     status: 409,
-    message: 'CONFLICT',
+    information: 'CONFLICT',
   },
   SERVER_ERROR: {
     status: 500,
-    message: 'INTERNAL SERVER ERROR',
+    information: 'INTERNAL SERVER ERROR',
   },
 };
 
-export default SC;
+export default StatusCode;

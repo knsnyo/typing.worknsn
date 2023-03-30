@@ -1,29 +1,74 @@
-class DBError extends Error {
-  constructor(message: string) {
+import { IErrorWithStatusCode, IStatusCode } from '@/types/types';
+import StatusCode from '@/utils/StatusCode';
+class ErrorWithStatusCode extends Error implements IErrorWithStatusCode {
+  public statusCode: IStatusCode;
+  constructor(message: string, statusCode: IStatusCode) {
     super(message);
+    this.name = `ERROR WITH STATUS CODE`;
+    this.statusCode = statusCode;
+  }
+}
+
+class DBError extends ErrorWithStatusCode {
+  constructor(message: string) {
+    super(message, StatusCode.SERVER_ERROR);
     this.name = `DB ERROR`;
   }
 }
 
-class ParamsError extends TypeError {
+class QueryError extends ErrorWithStatusCode {
   constructor(message: string) {
-    super(message);
+    super(message, StatusCode.BAD_REQUEST);
+    this.name = `QUERY ERROR`;
+  }
+}
+class ParamsError extends ErrorWithStatusCode {
+  constructor(message: string) {
+    super(message, StatusCode.BAD_REQUEST);
     this.name = `PARMAS ERROR`;
   }
 }
 
-class BodyError extends TypeError {
+class BodyError extends ErrorWithStatusCode {
   constructor(message: string) {
-    super(message);
+    super(message, StatusCode.BAD_REQUEST);
     this.name = `BODY ERROR`;
   }
 }
 
-class QueryError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = `QUERY ERROR`;
+class AuthError extends ErrorWithStatusCode {
+  constructor(message: string, statusCode: IStatusCode) {
+    super(message, statusCode);
+    this.name = `AUTH ERROR`;
   }
 }
 
-export { DBError, ParamsError, BodyError, QueryError };
+class TokenError extends AuthError {
+  constructor(message: string) {
+    super(message, StatusCode.UNAUTHORIZED);
+    this.name = `TOKEN ERROR`;
+  }
+}
+
+class SigninError extends AuthError {
+  constructor(message: string) {
+    super(message, StatusCode.UNAUTHORIZED);
+    this.name = `SIGNIN ERROR`;
+  }
+}
+
+class SignupError extends AuthError {
+  constructor(message: string) {
+    super(message, StatusCode.CONFLICT);
+    this.name = `SIGNIN ERROR`;
+  }
+}
+
+class NotFoundError extends ErrorWithStatusCode {
+  constructor(message: string) {
+    super(message, StatusCode.NOT_FOUND);
+    this.name = `NOT FOUND ERROR`;
+  }
+}
+
+export { ErrorWithStatusCode, DBError, ParamsError, BodyError, QueryError, TokenError, SigninError, SignupError, NotFoundError };

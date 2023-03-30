@@ -67,6 +67,7 @@ class _WordState extends State<Word> {
                       }
                       if (countBloc.getMax == countBloc.getCount) {
                         showDialog(
+                          barrierDismissible: false,
                           context: context,
                           builder: (BuildContext context) =>
                               const FinishDialog(),

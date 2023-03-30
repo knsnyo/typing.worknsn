@@ -42,4 +42,13 @@ interface IConfig {
   multipleStatements: boolean;
 }
 
-export { IUser, IPosition, IWord, IShort, IRecord, IChulseok, IConfig };
+interface IStatusCode {
+  status: number;
+  information: string;
+}
+
+interface IErrorWithStatusCode extends Error {
+  statusCode: IStatusCode;
+}
+
+export { IUser, IPosition, IWord, IShort, IRecord, IChulseok, IConfig, IStatusCode, IErrorWithStatusCode };

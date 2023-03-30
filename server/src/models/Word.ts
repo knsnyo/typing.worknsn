@@ -5,11 +5,7 @@ import { QueryError } from '@/utils/Error';
 
 const Word = {
   insert: async ({ word }: IWord): Promise<void> => {
-    try {
-      await db.execute(queries.word.insert, [word]);
-    } catch (err: unknown) {
-      throw new QueryError(`${err}`);
-    }
+    await db.execute(queries.word.insert, [word]);
   },
   select: async (): Promise<IWord> => {
     try {

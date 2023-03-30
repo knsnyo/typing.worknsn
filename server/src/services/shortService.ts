@@ -1,6 +1,6 @@
 import Short from '@/models/Short';
 import { IShort } from '@/types/types';
-import { BodyError, QueryError } from '@/utils/Error';
+import { BodyError, NotFoundError } from '@/utils/Error';
 
 const shortService = {
   insert: async ({ name, short }: IShort): Promise<void> => {
@@ -15,7 +15,7 @@ const shortService = {
   select: async (): Promise<IShort> => {
     const short: IShort = await Short.select();
     if (!short) {
-      throw new QueryError(`SHORT IS NULL`);
+      throw new NotFoundError(`SHORT IS NOT FOUND`);
     }
     return short;
   },

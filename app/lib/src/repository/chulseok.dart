@@ -7,6 +7,10 @@ class ChulseokRepository {
 
   static Future<List<Chulseok>?> getList() async {
     try {
+      bool isToken = await checkToken();
+      if (!isToken) {
+        return null;
+      }
       Map<String, String> tokens = await getTokens();
       Response res = await Dio(BaseOptions(headers: tokens)).get(url);
       if (null != res.data['accessToken']) {

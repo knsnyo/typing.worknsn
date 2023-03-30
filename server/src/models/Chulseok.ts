@@ -7,7 +7,6 @@ const Chulseok = {
   getList: async (idx: number): Promise<Array<IChulseok>> => {
     try {
       const chulseoks: Array<IChulseok> = await db.query(queries.chulseok.getList, [idx]);
-      console.log(chulseoks);
       return chulseoks;
     } catch (err: unknown) {
       throw new QueryError(`${err}`);

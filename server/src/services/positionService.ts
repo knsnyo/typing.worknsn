@@ -1,5 +1,5 @@
 import Position from '@/models/Position';
-import { ParamsError } from '@/utils/Error';
+import { NotFoundError, ParamsError } from '@/utils/Error';
 
 const positionService = {
   level: (level: string): string => {
@@ -8,6 +8,9 @@ const positionService = {
       throw new ParamsError('PARAMS IS NOT NUMBER');
     }
     const letter: string = Position.select(lv);
+    if (!letter) {
+      throw new NotFoundError(`LETTER IS NOT FOUND`);
+    }
     return letter;
   },
 };

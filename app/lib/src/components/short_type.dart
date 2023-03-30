@@ -74,6 +74,7 @@ class _ShortTypeState extends State<ShortType> {
                   }
                   if (countBloc.getMax == countBloc.getCount) {
                     showDialog(
+                      barrierDismissible: false,
                       context: context,
                       builder: (BuildContext context) => const FinishDialog(),
                     );

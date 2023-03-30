@@ -1,4 +1,5 @@
 import 'package:app/src/components/count.dart';
+import 'package:app/src/components/description.dart';
 import 'package:app/src/components/record.dart';
 import 'package:app/src/components/short_type.dart';
 import 'package:app/src/navigation/navigation.dart';
@@ -28,7 +29,9 @@ class FinishDialog extends AlertDialog {
       actions: [
         ElevatedButton(
           onPressed: () {
-            Navigator.of(context).popUntil((route) => route.isFirst);
+            chulseokBloc.getList();
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', (route) => false);
           },
           child: const Text('back', textScaleFactor: 1.5),
         ),
@@ -38,7 +41,6 @@ class FinishDialog extends AlertDialog {
 
   insertRecord() async {
     if (authBloc.getUser && 'short' == countBloc.getCategory) {
-      // 이거 지금 하나씩 밀림
       await recordBloc.insert(speed);
     }
   }

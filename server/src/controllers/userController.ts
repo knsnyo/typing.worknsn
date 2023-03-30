@@ -1,44 +1,52 @@
-import { NextFunction, Request, Response } from 'express';
-import { compare, genSalt, hash } from 'bcrypt';
-import SC from '@/utils/StatusCode';
+import { Request, Response } from 'express';
+import StatusCode from '@/utils/StatusCode';
 import { IUser } from '@/types/types';
 import userService from '@/services/userService';
+import errorCatch from '@/utils/errJson';
+import tokenService from '@/services/tokenService';
+import { JwtPayload } from 'jsonwebtoken';
 
 const userController = {
   signup: async (req: Request, res: Response): Promise<Response> => {
     const { id, password }: IUser = req.body;
     try {
-      const find: IUser = await userService.findUserByID(id);
-      if (find) {
-        return res.status(SC.CONFLICT.status).json(SC.CONFLICT);
-      }
-      const salt: string = await genSalt(10);
-      const hashed: string = await hash(password, salt);
-      const user: IUser = {
-        id: id,
-        password: hashed,
-      };
-      await userService.signup(user);
-      return res.status(SC.CREATED.status).json(SC.CREATED);
+      await userService.checkDuplicatdId(id);
+      await userService.signup({ id, password });
+      return res.status(StatusCode.CREATED.status).json(StatusCode.CREATED);
     } catch (err: unknown) {
-      return res.status(SC.SERVER_ERROR.status).json(SC.SERVER_ERROR);
+      return errorCatch(err, res);
     }
   },
-  signin: async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  signin: async (req: Request, res: Response): Promise<Response> => {
     const { id, password }: IUser = req.body;
     try {
-      const find: IUser = await userService.findUserByID(id);
-      if (!find) {
-        return res.status(SC.NOT_FOUND.status).json(SC.NOT_FOUND);
-      }
-      const validated: boolean = await compare(password, find.password);
-      if (!validated) {
-        return res.status(SC.UNAUTHORIZED.status).json(SC.UNAUTHORIZED);
-      }
-      req.body.idx = find.idx;
-      next();
+      const find: IUser = await userService.findUserById(id);
+      await userService.checkPassword(password, find.password);
+      const newAccessToken: string = tokenService.createAccess(find.idx ?? 0, find.id);
+      const newRefreshToken: string = tokenService.createRefresh(find.idx ?? 0, find.id);
+      return res.status(StatusCode.OK.status).json({
+        ...StatusCode.OK,
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+      });
     } catch (err: unknown) {
-      return res.status(SC.SERVER_ERROR.status).json(SC.SERVER_ERROR);
+      return errorCatch(err, res);
+    }
+  },
+  auto: async (req: Request, res: Response): Promise<Response> => {
+    const refreshToken: string = req.get('refreshToken') ?? '';
+    try {
+      tokenService.validate(refreshToken);
+      const data: JwtPayload = tokenService.verifyRefresh(refreshToken);
+      const newAccessToken: string = tokenService.createAccess(data.idx, data.id);
+      const newRefreshToken: string = tokenService.createRefresh(data.idx, data.id);
+      return res.status(StatusCode.OK.status).json({
+        ...StatusCode.OK,
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+      });
+    } catch (err: unknown) {
+      return errorCatch(err, res);
     }
   },
 };

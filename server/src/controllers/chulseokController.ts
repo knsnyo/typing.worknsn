@@ -1,5 +1,6 @@
 import chulseokService from '@/services/chulseokService';
 import { IChulseok } from '@/types/types';
+import errorCatch from '@/utils/errJson';
 import SC from '@/utils/StatusCode';
 import { Request, Response } from 'express';
 
@@ -13,8 +14,9 @@ const chulseokController = {
         chulseoks: chulseoks,
         accessToken: req.body.accessToken,
       });
-    } catch (err) {
-      return res.status(SC.SERVER_ERROR.status).json({ ...SC.SERVER_ERROR, err: `${err instanceof Error ? err.message : String(err)}` });
+    } catch (err: unknown) {
+      console.error(err);
+      return errorCatch(err, res);
     }
   },
 };

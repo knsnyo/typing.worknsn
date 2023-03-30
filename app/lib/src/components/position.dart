@@ -71,6 +71,7 @@ class _PositionState extends State<Position> {
                         }
                         if (countBloc.getMax == countBloc.getCount) {
                           showDialog(
+                            barrierDismissible: false,
                             context: context,
                             builder: (BuildContext context) =>
                                 const FinishDialog(),

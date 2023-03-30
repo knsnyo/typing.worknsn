@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import SC from '@/utils/StatusCode';
+import StatusCode from '@/utils/StatusCode';
 import { IRecord } from '@/types/types';
 import recordService from '@/services/recordService';
-import { QueryError } from '@/utils/Error';
+import errorCatch from '@/utils/errJson';
 
 const recordController = {
   insert: async (req: Request, res: Response): Promise<Response> => {
@@ -13,28 +13,25 @@ const recordController = {
     };
     try {
       await recordService.insert(data);
-      return res.status(SC.CREATED.status).json({
-        ...SC.CREATED,
+      return res.status(StatusCode.CREATED.status).json({
+        ...StatusCode.CREATED,
         accessToken: req.body.accessToken,
       });
-    } catch (err) {
-      return res.status(SC.SERVER_ERROR.status).json({ ...SC.SERVER_ERROR, err: `${err instanceof Error ? err.message : String(err)}` });
+    } catch (err: unknown) {
+      return errorCatch(err, res);
     }
   },
   getInfo: async (req: Request, res: Response): Promise<Response> => {
     const idx: number = req.body.idx;
     try {
       const records: Array<IRecord> = await recordService.select(idx);
-      if (0 === records.length) {
-        throw new QueryError(`RECORD IS EMPTY`);
-      }
-      return res.status(SC.OK.status).json({
-        ...SC.OK,
+      return res.status(StatusCode.OK.status).json({
+        ...StatusCode.OK,
         records: records,
         accessToken: req.body.accessToken,
       });
-    } catch (err) {
-      return res.status(SC.SERVER_ERROR.status).json({ ...SC.SERVER_ERROR, err: `${err instanceof Error ? err.message : String(err)}` });
+    } catch (err: unknown) {
+      return errorCatch(err, res);
     }
   },
 };
