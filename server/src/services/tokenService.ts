@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import { JWT_ACCESS, JWT_REFRESH } from '@/constants/constatns';
 import { BodyError, TokenError } from '@/utils/Error';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
 
@@ -20,7 +20,7 @@ const tokenService = {
         idx,
         id,
       },
-      process.env.JWT_ACCESS!,
+      JWT_ACCESS!,
       {
         expiresIn: '1m',
       }
@@ -38,7 +38,7 @@ const tokenService = {
         idx,
         id,
       },
-      process.env.JWT_REFRESH!,
+      JWT_REFRESH!,
       {
         expiresIn: '15d',
       }
@@ -46,7 +46,7 @@ const tokenService = {
   },
   verifyAccess: (token: string): { idx: number; verify: boolean } => {
     try {
-      const data: JwtPayload = verify(token, process.env.JWT_ACCESS!) as JwtPayload;
+      const data: JwtPayload = verify(token, JWT_ACCESS!) as JwtPayload;
       return { idx: data.idx, verify: true };
     } catch (err: unknown) {
       return { idx: -1, verify: false };
@@ -54,7 +54,7 @@ const tokenService = {
   },
   verifyRefresh: (token: string): JwtPayload => {
     try {
-      return verify(token, process.env.JWT_REFRESH!) as JwtPayload;
+      return verify(token, JWT_REFRESH!) as JwtPayload;
     } catch (err: unknown) {
       throw new TokenError(`REFRESH TOKEN IS EXPIRE`);
     }
