@@ -1,4 +1,4 @@
-import 'package:app/src/models/short.dart';
+import 'package:app/src/data/models/short.dart';
 import 'package:dio/dio.dart';
 
 class ShortRepository {

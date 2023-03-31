@@ -1,7 +1,7 @@
-import 'package:app/src/components/count.dart';
-import 'package:app/src/components/description.dart';
-import 'package:app/src/components/record.dart';
-import 'package:app/src/components/short_type.dart';
+import 'package:app/src/ui/widget/count.dart';
+import 'package:app/src/ui/widget/challenge.dart';
+import 'package:app/src/ui/widget/record.dart';
+import 'package:app/src/ui/widget/short_type.dart';
 import 'package:app/src/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:app/src/models/position.dart';
-import 'package:app/src/repository/position.dart';
+import 'package:app/src/data/models/position.dart';
+import 'package:app/src/data/repository/position.dart';
 
 class PositionBloc {
   int _level = 0;

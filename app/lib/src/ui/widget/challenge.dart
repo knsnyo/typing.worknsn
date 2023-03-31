@@ -1,18 +1,18 @@
 import 'package:app/src/bloc/chulseok_bloc.dart';
-import 'package:app/src/models/chulseok.dart';
+import 'package:app/src/data/models/chulseok.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 late ChulseokBloc chulseokBloc;
 
-class Description extends StatefulWidget {
-  const Description({super.key});
+class Challenge extends StatefulWidget {
+  const Challenge({super.key});
 
   @override
-  State<Description> createState() => _DescriptionState();
+  State<Challenge> createState() => _ChallengeState();
 }
 
-class _DescriptionState extends State<Description> {
+class _ChallengeState extends State<Challenge> {
   @override
   void initState() {
     super.initState();
@@ -35,13 +35,13 @@ class _DescriptionState extends State<Description> {
         Map<DateTime, List<String>> check = _formatting(snapshot.data);
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
           children: [
             TableCalendar(
+              focusedDay: DateTime.now(),
               firstDay: DateTime.utc(2023, 1, 1),
               lastDay: DateTime.now(),
-              focusedDay: DateTime.now(),
               headerStyle: const HeaderStyle(
                 titleCentered: true,
                 formatButtonVisible: false,

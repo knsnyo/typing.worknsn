@@ -27,7 +27,7 @@ class DB {
     return DB.instance;
   }
 
-  async query(sql: string, values?: Array<any>): Promise<any> {
+  public async query(sql: string, values?: Array<any>): Promise<any> {
     let connection;
     try {
       connection = await this.pool.getConnection();
@@ -36,13 +36,11 @@ class DB {
     } catch (err: unknown) {
       throw new DBError(`${err}`);
     } finally {
-      if (connection) {
-        connection.release();
-      }
+      connection?.release();
     }
   }
 
-  async execute(sql: string, values?: Array<any>): Promise<any> {
+  public async execute(sql: string, values?: Array<any>): Promise<any> {
     let connection;
     try {
       connection = await this.pool.getConnection();
@@ -53,9 +51,7 @@ class DB {
       await connection?.rollback();
       throw new DBError(`${err}`);
     } finally {
-      if (connection) {
-        connection.release();
-      }
+      connection?.release();
     }
   }
 }

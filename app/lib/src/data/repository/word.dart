@@ -1,4 +1,4 @@
-import 'package:app/src/models/word.dart';
+import 'package:app/src/data/models/word.dart';
 import 'package:dio/dio.dart';
 
 class WordRepository {

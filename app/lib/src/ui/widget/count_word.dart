@@ -1,9 +1,9 @@
-import 'package:app/src/components/count.dart';
-import 'package:app/src/components/position.dart';
+import 'package:app/src/ui/widget/count.dart';
+import 'package:app/src/ui/widget/word.dart';
 import 'package:flutter/material.dart';
 
-class CountPosition extends StatelessWidget {
-  const CountPosition({super.key});
+class CountWord extends StatelessWidget {
+  const CountWord({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +13,11 @@ class CountPosition extends StatelessWidget {
       children: const [
         Flexible(
           flex: 1,
-          child: Count(max: 100, category: 'position'),
+          child: Count(max: 100, category: 'word'),
         ),
         Flexible(
           flex: 2,
-          child: Position(),
+          child: Word(),
         ),
       ],
     );

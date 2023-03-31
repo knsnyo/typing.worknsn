@@ -1,4 +1,4 @@
-import 'package:app/src/models/position.dart';
+import 'package:app/src/data/models/position.dart';
 import 'package:dio/dio.dart';
 
 class PositionRepository {

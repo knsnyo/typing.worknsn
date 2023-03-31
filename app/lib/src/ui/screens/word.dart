@@ -1,6 +1,6 @@
-import 'package:app/src/components/keyboard.dart';
-import 'package:app/src/components/count_word.dart';
-import 'package:app/src/utils/app_bar.dart';
+import 'package:app/src/ui/widget/keyboard.dart';
+import 'package:app/src/ui/widget/count_word.dart';
+import 'package:app/src/utils/title_bar.dart';
 import 'package:flutter/material.dart';
 
 class Word extends StatelessWidget {

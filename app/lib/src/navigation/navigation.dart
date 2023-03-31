@@ -1,11 +1,11 @@
 import 'package:app/src/bloc/auth_bloc.dart';
-import 'package:app/src/ui/home.dart';
-import 'package:app/src/ui/position.dart';
-import 'package:app/src/ui/setting.dart';
-import 'package:app/src/ui/short.dart';
-import 'package:app/src/ui/signin.dart';
-import 'package:app/src/ui/signup.dart';
-import 'package:app/src/ui/word.dart';
+import 'package:app/src/ui/screens/home.dart';
+import 'package:app/src/ui/screens/position.dart';
+import 'package:app/src/ui/screens/setting.dart';
+import 'package:app/src/ui/screens/short.dart';
+import 'package:app/src/ui/screens/signin.dart';
+import 'package:app/src/ui/screens/signup.dart';
+import 'package:app/src/ui/screens/word.dart';
 import 'package:flutter/material.dart';
 
 late AuthBloc authBloc;
@@ -35,7 +35,7 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      builder: (context, child) => MediaQuery(
+      builder: (BuildContext context, Widget? child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
         child: child!,
       ),

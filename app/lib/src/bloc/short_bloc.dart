@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:app/src/models/short.dart';
-import 'package:app/src/repository/short.dart';
+import 'package:app/src/data/models/short.dart';
+import 'package:app/src/data/repository/short.dart';
 
 class ShortBloc {
   Short? _current;

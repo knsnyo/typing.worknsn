@@ -1,10 +1,10 @@
-import 'package:app/src/components/keyboard.dart';
-import 'package:app/src/components/count_position.dart';
-import 'package:app/src/utils/app_bar.dart';
+import 'package:app/src/ui/widget/count.dart';
+import 'package:app/src/utils/title_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:app/src/ui/widget/short_type.dart';
 
-class Position extends StatelessWidget {
-  const Position({super.key});
+class Short extends StatelessWidget {
+  const Short({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +17,10 @@ class Position extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: const [
             Flexible(
-              flex: 2,
-              child: CountPosition(),
+              flex: 1,
+              child: Count(max: 1, category: 'short'),
             ),
-            Flexible(
-              flex: 3,
-              child: Keyboard(),
-            ),
+            Flexible(flex: 3, child: ShortType()),
           ],
         ),
       ),

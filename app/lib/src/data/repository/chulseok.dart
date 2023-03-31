@@ -1,4 +1,4 @@
-import 'package:app/src/models/chulseok.dart';
+import 'package:app/src/data/models/chulseok.dart';
 import 'package:app/src/storage/storage.dart';
 import 'package:dio/dio.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:app/src/models/word.dart';
-import 'package:app/src/repository/word.dart';
+import 'package:app/src/data/models/word.dart';
+import 'package:app/src/data/repository/word.dart';
 
 class WordBloc {
   Word? _current;

@@ -1,4 +1,4 @@
-import 'package:app/src/models/user.dart';
+import 'package:app/src/data/models/user.dart';
 import 'package:app/src/storage/storage.dart';
 import 'package:dio/dio.dart';
 
@@ -21,11 +21,10 @@ class UserRepository {
 
   static Future<Response?> signup(String id, String password) async {
     try {
-      Response res = await Dio().post('$url/signup', data: {
+      return await Dio().post('$url/signup', data: {
         'id': id,
         'password': password,
       });
-      return res;
     } catch (err) {
       return null;
     }

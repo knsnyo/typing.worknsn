@@ -1,8 +1,8 @@
 import 'package:app/src/bloc/record_bloc.dart';
 import 'package:app/src/bloc/short_bloc.dart';
-import 'package:app/src/components/count.dart';
-import 'package:app/src/components/finish_dialog.dart';
-import 'package:app/src/components/record.dart';
+import 'package:app/src/ui/widget/count.dart';
+import 'package:app/src/ui/widget/finish_dialog.dart';
+import 'package:app/src/ui/widget/record.dart';
 import 'package:flutter/material.dart';
 
 late ShortBloc shortBloc;

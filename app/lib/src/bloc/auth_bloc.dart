@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:app/src/repository/user.dart';
+import 'package:app/src/data/repository/user.dart';
 import 'package:dio/dio.dart';
 
 class AuthBloc {
@@ -27,8 +27,7 @@ class AuthBloc {
 
   Future<Response?> signup(String id, String password) async {
     try {
-      Response? res = await UserRepository.signup(id, password);
-      return res;
+      return await UserRepository.signup(id, password);
     } catch (err) {
       return null;
     }

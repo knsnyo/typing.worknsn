@@ -1,7 +1,7 @@
-import 'package:app/src/components/level_button.dart';
-import 'package:app/src/components/menu_button.dart';
+import 'package:app/src/ui/widget/level_button.dart';
+import 'package:app/src/ui/widget/menu_button.dart';
 import 'package:app/src/navigation/navigation.dart';
-import 'package:app/src/utils/snackbar.dart';
+import 'package:app/src/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -142,15 +142,14 @@ class Menu extends StatelessWidget {
           ],
         ),
       );
-    } else {
-      return const Flexible(
-        child: Center(
-          child: MenuButton(
-            menuName: 'Sign in',
-            routeName: '/signin',
-          ),
-        ),
-      );
     }
+    return const Flexible(
+      child: Center(
+        child: MenuButton(
+          menuName: 'Sign in',
+          routeName: '/signin',
+        ),
+      ),
+    );
   }
 }

@@ -1,8 +1,8 @@
-import 'package:app/src/components/menu_button.dart';
+import 'package:app/src/ui/widget/menu_button.dart';
 import 'package:app/src/navigation/navigation.dart';
-import 'package:app/src/utils/app_bar.dart';
-import 'package:app/src/utils/padding.dart';
-import 'package:app/src/utils/snackbar.dart';
+import 'package:app/src/utils/title_bar.dart';
+import 'package:app/src/utils/screen_padding.dart';
+import 'package:app/src/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 
 class Signin extends StatefulWidget {
@@ -44,6 +44,8 @@ class _SigninState extends State<Signin> {
               Flexible(
                 flex: 2,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(

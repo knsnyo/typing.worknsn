@@ -1,4 +1,4 @@
-import 'package:app/src/utils/app_bar.dart';
+import 'package:app/src/utils/title_bar.dart';
 import 'package:flutter/material.dart';
 
 class Setting extends StatelessWidget {

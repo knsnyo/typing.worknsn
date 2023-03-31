@@ -1,7 +1,7 @@
 import 'package:app/src/navigation/navigation.dart';
-import 'package:app/src/utils/app_bar.dart';
-import 'package:app/src/utils/padding.dart';
-import 'package:app/src/utils/snackbar.dart';
+import 'package:app/src/utils/title_bar.dart';
+import 'package:app/src/utils/screen_padding.dart';
+import 'package:app/src/utils/snack_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -44,6 +44,8 @@ class _SignupState extends State<Signup> {
               Flexible(
                 flex: 2,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(
@@ -67,7 +69,7 @@ class _SignupState extends State<Signup> {
                       obscureText: true,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please Enter your Passsword';
+                          return 'Please Enter your Password';
                         }
                         return null;
                       },
@@ -84,19 +86,20 @@ class _SignupState extends State<Signup> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          String id = _idController.text;
-                          String password = _passwordController.text;
-                          Response? res = await authBloc.signup(id, password);
-                          if (null == res) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(failSnackbar('Sign Up Fail'));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                successSnackbar('Sign Up Success'));
-                            Navigator.pop(context);
-                          }
+                        if (!_formKey.currentState!.validate()) {
+                          return;
                         }
+                        String id = _idController.text;
+                        String password = _passwordController.text;
+                        Response? res = await authBloc.signup(id, password);
+                        if (null == res) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(failSnackbar('Sign Up Fail'));
+                          return;
+                        }
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(successSnackbar('Sign Up Success'));
+                        Navigator.pop(context);
                       },
                       child: const Text('Sign up', textScaleFactor: 1.0),
                     ),

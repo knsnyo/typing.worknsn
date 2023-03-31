@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:app/src/models/chulseok.dart';
-import 'package:app/src/repository/chulseok.dart';
+import 'package:app/src/data/models/chulseok.dart';
+import 'package:app/src/data/repository/chulseok.dart';
 
 class ChulseokBloc {
   List<Chulseok>? _chulseok;

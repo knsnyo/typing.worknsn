@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:app/src/models/record.dart';
-import 'package:app/src/repository/record.dart';
+import 'package:app/src/data/models/record.dart';
+import 'package:app/src/data/repository/record.dart';
 
 class RecordBloc {
   List<Record>? _record;
