@@ -86,20 +86,21 @@ class _SigninState extends State<Signin> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          String id = _idController.text;
-                          String password = _passwordController.text;
-                          await authBloc.signin(id, password);
-                          if (!authBloc.getUser) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(failSnackbar('Sign In Fail'));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                successSnackbar('Sign In Success'));
-                            Navigator.of(context)
-                                .pushNamedAndRemoveUntil('/', (route) => false);
-                          }
+                        if (!_formKey.currentState!.validate()) {
+                          return;
                         }
+                        String id = _idController.text;
+                        String password = _passwordController.text;
+                        await authBloc.signin(id, password);
+                        if (!authBloc.getUser) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(failSnackbar('Sign In Fail'));
+                          return;
+                        }
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(successSnackbar('Sign In Success'));
+                        Navigator.of(context)
+                            .pushNamedAndRemoveUntil('/', (route) => false);
                       },
                       child: const Text('Sign in', textScaleFactor: 1.0),
                     ),

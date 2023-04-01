@@ -1,4 +1,4 @@
-import 'package:app/src/bloc/position_bloc.dart';
+import 'package:app/src/bloc/position/position_bloc.dart';
 import 'package:app/src/ui/widget/count.dart';
 import 'package:app/src/ui/widget/finish_dialog.dart';
 import 'package:app/src/ui/widget/record.dart';

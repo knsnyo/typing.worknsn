@@ -1,4 +1,4 @@
-import 'package:app/src/bloc/auth_bloc.dart';
+import 'package:app/src/bloc/auth/auth_bloc.dart';
 import 'package:app/src/ui/screens/home.dart';
 import 'package:app/src/ui/screens/position.dart';
 import 'package:app/src/ui/screens/setting.dart';

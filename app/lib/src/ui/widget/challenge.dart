@@ -1,4 +1,4 @@
-import 'package:app/src/bloc/chulseok_bloc.dart';
+import 'package:app/src/bloc/chulseok/chulseok_bloc.dart';
 import 'package:app/src/data/models/chulseok.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';

@@ -1,5 +1,5 @@
-import 'package:app/src/bloc/record_bloc.dart';
-import 'package:app/src/bloc/short_bloc.dart';
+import 'package:app/src/bloc/record/record_bloc.dart';
+import 'package:app/src/bloc/short/short_bloc.dart';
 import 'package:app/src/ui/widget/count.dart';
 import 'package:app/src/ui/widget/finish_dialog.dart';
 import 'package:app/src/ui/widget/record.dart';

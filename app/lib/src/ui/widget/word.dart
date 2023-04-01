@@ -2,7 +2,7 @@ import 'package:app/src/ui/widget/count.dart';
 import 'package:app/src/ui/widget/finish_dialog.dart';
 import 'package:app/src/ui/widget/record.dart';
 import 'package:flutter/material.dart';
-import 'package:app/src/bloc/word_bloc.dart';
+import 'package:app/src/bloc/word/word_bloc.dart';
 
 late WordBloc wordBloc;
 
