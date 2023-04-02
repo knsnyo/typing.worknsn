@@ -1,12 +1,8 @@
-import 'package:app/src/bloc/record/record_bloc.dart';
-import 'package:app/src/bloc/short/short_bloc.dart';
 import 'package:app/src/ui/widget/count.dart';
 import 'package:app/src/ui/widget/finish_dialog.dart';
 import 'package:app/src/ui/widget/record.dart';
+import 'package:app/src/viewmodel/short_view_model.dart';
 import 'package:flutter/material.dart';
-
-late ShortBloc shortBloc;
-late RecordBloc recordBloc;
 
 class ShortType extends StatefulWidget {
   const ShortType({super.key});
@@ -16,30 +12,30 @@ class ShortType extends StatefulWidget {
 }
 
 class _ShortTypeState extends State<ShortType> {
-  TextEditingController textEditingController = TextEditingController();
-  FocusNode focus = FocusNode();
+  final ShortViewModel _shortViewModel = ShortViewModel();
+  final TextEditingController _textEditingController = TextEditingController();
+  final FocusNode _focus = FocusNode();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    shortBloc = ShortBloc();
-    shortBloc.init();
-    recordBloc = RecordBloc();
+    _shortViewModel.init();
   }
 
   @override
   void dispose() {
     super.dispose();
-    shortBloc.dispose();
-    textEditingController.dispose();
-    focus.unfocus();
+    _textEditingController.dispose();
+    _focus.unfocus();
+    _shortViewModel.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: shortBloc.short,
-      builder: (context, snapshot) {
+      stream: _shortViewModel.shortStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) {
           return const CircularProgressIndicator();
         }
@@ -51,7 +47,7 @@ class _ShortTypeState extends State<ShortType> {
             Flexible(
               flex: 1,
               child: Text(
-                snapshot.data[0].short,
+                snapshot.data[0].short as String,
                 textScaleFactor: 1.5,
               ),
             ),
@@ -59,23 +55,23 @@ class _ShortTypeState extends State<ShortType> {
               flex: 1,
               child: TextFormField(
                 autofocus: true,
-                focusNode: focus,
-                controller: textEditingController,
+                focusNode: _focus,
+                controller: _textEditingController,
                 textAlign: TextAlign.center,
                 onChanged: (value) async {
                   if (!stopwatch.isRunning) {
                     stopwatch.start();
                   }
-                  if (textEditingController.text == snapshot.data[0].short) {
-                    shortBloc.next();
-                    countBloc.increment();
-                    countBloc.typing(textEditingController.text.length);
-                    textEditingController.text = '';
+                  if (_textEditingController.text == snapshot.data[0].short) {
+                    await _shortViewModel.next();
+                    countViewModel.increment = null;
+                    countViewModel.total = _textEditingController.text.length;
+                    _textEditingController.text = '';
                   }
-                  if (countBloc.getMax == countBloc.getCount) {
-                    showDialog(
+                  if (countViewModel.isMax()) {
+                    showDialog<AlertDialog>(
                       barrierDismissible: false,
-                      context: context,
+                      context: scaffoldKey.currentContext ?? context,
                       builder: (BuildContext context) => const FinishDialog(),
                     );
                   }

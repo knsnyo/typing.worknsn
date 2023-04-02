@@ -91,7 +91,7 @@ class _SignupState extends State<Signup> {
                         }
                         String id = _idController.text;
                         String password = _passwordController.text;
-                        Response? res = await authBloc.signup(id, password);
+                        Response res = await userViewModel.signup(id, password);
                         if (null == res) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(failSnackbar('Sign Up Fail'));

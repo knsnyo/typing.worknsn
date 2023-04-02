@@ -1,18 +1,18 @@
 import 'package:app/src/ui/widget/count.dart';
-import 'package:app/src/ui/widget/challenge.dart';
 import 'package:app/src/ui/widget/record.dart';
-import 'package:app/src/ui/widget/short_type.dart';
 import 'package:app/src/navigation/navigation.dart';
+import 'package:app/src/viewmodel/record_view_model.dart';
 import 'package:flutter/material.dart';
 
 int speed = 0;
+RecordViewModel _recordViewModel = RecordViewModel();
 
 class FinishDialog extends AlertDialog {
   const FinishDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
-    speed = (countBloc.getType / total * 60).round();
+    speed = (countViewModel.type / total * 60).round();
     insertRecord();
     return AlertDialog(
       content: Column(
@@ -29,7 +29,6 @@ class FinishDialog extends AlertDialog {
       actions: [
         ElevatedButton(
           onPressed: () {
-            chulseokBloc.getList();
             Navigator.of(context)
                 .pushNamedAndRemoveUntil('/', (route) => false);
           },
@@ -39,9 +38,9 @@ class FinishDialog extends AlertDialog {
     );
   }
 
-  insertRecord() async {
-    if (authBloc.getUser && 'short' == countBloc.getCategory) {
-      await recordBloc.insert(speed);
+  void insertRecord() async {
+    if (userViewModel.user && 'short' == countViewModel.category) {
+      await _recordViewModel.insert(speed);
     }
   }
 }

@@ -15,7 +15,6 @@ const chulseokController = {
         accessToken: req.body.accessToken,
       });
     } catch (err: unknown) {
-      console.error(err);
       return errorCatch(err, res);
     }
   },

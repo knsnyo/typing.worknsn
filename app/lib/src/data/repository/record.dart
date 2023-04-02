@@ -1,35 +1,28 @@
 import 'package:app/src/data/models/record.dart';
-import 'package:app/src/storage/storage.dart';
 import 'package:dio/dio.dart';
 
 class RecordRepository {
   static String url = 'http://0.0.0.0:5000/info/records';
 
-  static Future<Response?> insert(int speed) async {
+  static Future<Response> insert(Map<String, dynamic> tokens, int speed) async {
     try {
-      Map<String, String> tokens = await getTokens();
       Response res = await Dio(BaseOptions(headers: tokens))
-          .post(url, data: {'speed': speed});
-      if (null != res.data['accessToken']) {
-        await setAccessToken(res.data['accessToken']);
-        tokens = await getTokens();
-      }
+          .post<dynamic>(url, data: {'speed': speed});
       return res;
     } catch (err) {
-      return null;
+      throw Exception('DIO ERROR');
     }
   }
 
-  static Future<List<Record>?> getInfo() async {
+  static Future<List<Record>> getInfo(Map<String, String> tokens) async {
     try {
-      Map<String, String> tokens = await getTokens();
-      Response res = await Dio(BaseOptions(headers: tokens)).get(url);
-      List<Record> records = res.data['record']
-          .map<Record>((json) => Record.fromJson(json))
+      Response res = await Dio(BaseOptions(headers: tokens)).get<dynamic>(url);
+      List<Record> records = (res.data['record'] as List<Record>)
+          .map<Record>((json) => Record.fromJson(json as Map<String, dynamic>))
           .toList();
       return records;
     } catch (err) {
-      return null;
+      throw Exception('DIO ERROR');
     }
   }
 }

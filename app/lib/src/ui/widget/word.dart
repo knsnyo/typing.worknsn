@@ -1,10 +1,8 @@
 import 'package:app/src/ui/widget/count.dart';
 import 'package:app/src/ui/widget/finish_dialog.dart';
 import 'package:app/src/ui/widget/record.dart';
+import 'package:app/src/viewmodel/word_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:app/src/bloc/word/word_bloc.dart';
-
-late WordBloc wordBloc;
 
 class Word extends StatefulWidget {
   const Word({super.key});
@@ -14,29 +12,26 @@ class Word extends StatefulWidget {
 }
 
 class _WordState extends State<Word> {
-  TextEditingController textEditingController = TextEditingController();
-  FocusNode focus = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    wordBloc = WordBloc();
-    wordBloc.init();
-  }
+  final WordViewModel _wordViewModel = WordViewModel();
+  final TextEditingController _textEditingController = TextEditingController();
+  final FocusNode _focus = FocusNode();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void dispose() {
     super.dispose();
-    textEditingController.dispose();
-    focus.unfocus();
-    wordBloc.dispose();
+    _textEditingController.dispose();
+    _focus.unfocus();
+    _wordViewModel.dispose();
+    countViewModel.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    _wordViewModel.init();
     return StreamBuilder(
-      stream: wordBloc.word,
-      builder: (context, snapshot) {
+      stream: _wordViewModel.wordStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) {
           return const CircularProgressIndicator();
         }
@@ -49,26 +44,28 @@ class _WordState extends State<Word> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text(snapshot.data[0].word, textScaleFactor: 3),
+                  Text(snapshot.data[0].word as String, textScaleFactor: 3),
                   TextFormField(
                     autofocus: true,
-                    focusNode: focus,
-                    controller: textEditingController,
+                    focusNode: _focus,
+                    controller: _textEditingController,
                     textAlign: TextAlign.center,
-                    onChanged: (value) {
+                    onChanged: (value) async {
                       if (!stopwatch.isRunning) {
                         stopwatch.start();
                       }
-                      if (textEditingController.text == snapshot.data[0].word) {
-                        wordBloc.next();
-                        countBloc.increment();
-                        countBloc.typing(textEditingController.text.length);
-                        textEditingController.text = '';
+                      if (_textEditingController.text ==
+                          snapshot.data[0].word) {
+                        await _wordViewModel.next();
+                        countViewModel.increment = null;
+                        countViewModel.total =
+                            _textEditingController.text.length;
+                        _textEditingController.text = '';
                       }
-                      if (countBloc.getMax == countBloc.getCount) {
-                        showDialog(
+                      if (countViewModel.isMax()) {
+                        showDialog<AlertDialog>(
                           barrierDismissible: false,
-                          context: context,
+                          context: scaffoldKey.currentContext ?? context,
                           builder: (BuildContext context) =>
                               const FinishDialog(),
                         );
@@ -80,7 +77,7 @@ class _WordState extends State<Word> {
             ),
             Flexible(
               child: Text(
-                snapshot.data[1].word,
+                snapshot.data[1].word as String,
                 textScaleFactor: 3,
                 style: const TextStyle(color: Colors.grey),
               ),

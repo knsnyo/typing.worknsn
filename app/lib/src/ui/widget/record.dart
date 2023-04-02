@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 late Stopwatch stopwatch;
@@ -23,14 +22,9 @@ class _RecordState extends State<Record> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: Stream.periodic(const Duration(milliseconds: 100)),
+    return StreamBuilder<dynamic>(
+      stream: Stream<dynamic>.periodic(const Duration(milliseconds: 100)),
       builder: (context, snapshot) {
         total = (stopwatch.elapsedMilliseconds / 1000).floor();
         minute = total ~/ 60;

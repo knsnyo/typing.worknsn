@@ -11,7 +11,7 @@ class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: authBloc.user,
+      stream: userViewModel.userStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -22,7 +22,7 @@ class Menu extends StatelessWidget {
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    showDialog(
+                    showDialog<AlertDialog>(
                       context: context,
                       builder: (context) {
                         return Dialog(
@@ -106,8 +106,8 @@ class Menu extends StatelessWidget {
     );
   }
 
-  checkMember(BuildContext context) {
-    if (authBloc.getUser) {
+  Widget checkMember(BuildContext context) {
+    if (userViewModel.user) {
       return Flexible(
         flex: 2,
         child: Column(
@@ -124,8 +124,8 @@ class Menu extends StatelessWidget {
               child: Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    await authBloc.signout();
-                    if (authBloc.getUser) {
+                    await userViewModel.signout();
+                    if (userViewModel.user) {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(failSnackbar('Sign Out Fail'));
                     } else {

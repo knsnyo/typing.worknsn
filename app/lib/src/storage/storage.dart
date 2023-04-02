@@ -1,35 +1,40 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> setToken(String accessToken, String refreshToken) async {
+Future<void> setTokens(String accessToken, String refreshToken) async {
   SharedPreferences storage = await SharedPreferences.getInstance();
   storage.setString('accessToken', accessToken);
   storage.setString('refreshToken', refreshToken);
 }
 
-Future<void> removeToken() async {
+Future<void> removeTokens() async {
   SharedPreferences storage = await SharedPreferences.getInstance();
   storage.setString('accessToken', '');
   storage.setString('refreshToken', '');
 }
 
-Future<bool> checkToken() async {
+Future<void> checkTokens() async {
   SharedPreferences storage = await SharedPreferences.getInstance();
   String? accessToken = storage.getString('accessToken');
   String? refreshToken = storage.getString('refreshToken');
 
-  if ('' == accessToken) {
-    return false;
+  if (accessToken!.isEmpty) {
+    throw Exception('ACCESS TOKEN IS NULL');
   }
-  if ('' == refreshToken) {
-    return false;
+  if (refreshToken!.isEmpty) {
+    throw Exception('ACCESS TOKEN IS NULL');
   }
-  return true;
 }
 
 Future<Map<String, String>> getTokens() async {
   SharedPreferences storage = await SharedPreferences.getInstance();
-  String? accessToken = storage.getString('accessToken') ?? '';
-  String? refreshToken = storage.getString('refreshToken') ?? '';
+  String accessToken = storage.getString('accessToken') ?? '';
+  String refreshToken = storage.getString('refreshToken') ?? '';
+  if (accessToken.isEmpty) {
+    throw Exception('ACCESS TOKEN IS NULL');
+  }
+  if (refreshToken.isEmpty) {
+    throw Exception('REFRESH TOKEN IS NULL');
+  }
 
   return {'accessToken': accessToken, 'refreshToken': refreshToken};
 }

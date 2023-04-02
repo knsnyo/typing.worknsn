@@ -4,13 +4,13 @@ import 'package:dio/dio.dart';
 class ShortRepository {
   static String url = 'http://0.0.0.0:5000/shorts';
 
-  static Future<Short?> get() async {
+  static Future<Short> get() async {
     try {
-      Response res = await Dio().get(url);
-      Short short = Short.fromJson(res.data);
+      Response res = await Dio().get<dynamic>(url);
+      Short short = Short.fromJson(res.data as Map<String, dynamic>);
       return short;
     } catch (err) {
-      return null;
+      throw Exception('DIO ERROR');
     }
   }
 }

@@ -91,8 +91,8 @@ class _SigninState extends State<Signin> {
                         }
                         String id = _idController.text;
                         String password = _passwordController.text;
-                        await authBloc.signin(id, password);
-                        if (!authBloc.getUser) {
+                        await userViewModel.signin(id, password);
+                        if (!userViewModel.user) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(failSnackbar('Sign In Fail'));
                           return;

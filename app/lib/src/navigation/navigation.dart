@@ -1,4 +1,3 @@
-import 'package:app/src/bloc/auth/auth_bloc.dart';
 import 'package:app/src/ui/screens/home.dart';
 import 'package:app/src/ui/screens/position.dart';
 import 'package:app/src/ui/screens/setting.dart';
@@ -6,9 +5,10 @@ import 'package:app/src/ui/screens/short.dart';
 import 'package:app/src/ui/screens/signin.dart';
 import 'package:app/src/ui/screens/signup.dart';
 import 'package:app/src/ui/screens/word.dart';
+import 'package:app/src/viewmodel/user_view_model.dart';
 import 'package:flutter/material.dart';
 
-late AuthBloc authBloc;
+late UserViewModel userViewModel;
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -21,15 +21,15 @@ class _NavigationState extends State<Navigation> {
   @override
   void initState() {
     super.initState();
-    authBloc = AuthBloc();
-    authBloc.init();
-    authBloc.auto();
+    userViewModel = UserViewModel();
+    userViewModel.init();
+    userViewModel.auto();
   }
 
   @override
   void dispose() {
     super.dispose();
-    authBloc.dispose();
+    userViewModel.dispose();
   }
 
   @override

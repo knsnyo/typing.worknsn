@@ -1,9 +1,10 @@
-import 'package:app/src/bloc/chulseok/chulseok_bloc.dart';
 import 'package:app/src/data/models/chulseok.dart';
+import 'package:app/src/navigation/navigation.dart';
+import 'package:app/src/viewmodel/chulseok_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-late ChulseokBloc chulseokBloc;
+late ChulseokViewModel chulseokViewModel;
 
 class Challenge extends StatefulWidget {
   const Challenge({super.key});
@@ -16,29 +17,54 @@ class _ChallengeState extends State<Challenge> {
   @override
   void initState() {
     super.initState();
-    chulseokBloc = ChulseokBloc();
-    chulseokBloc.init();
-    chulseokBloc.getList();
+    chulseokViewModel = ChulseokViewModel();
+    chulseokViewModel.init();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    chulseokViewModel.getList();
   }
 
   @override
   void dispose() {
     super.dispose();
-    chulseokBloc.dispose();
+    chulseokViewModel.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: chulseokBloc.chulseok,
+      stream: chulseokViewModel.chulseokStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        Map<DateTime, List<String>> check = _formatting(snapshot.data);
+        if (!snapshot.hasData) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              TableCalendar<dynamic>(
+                focusedDay: DateTime.now(),
+                firstDay: DateTime.utc(2023, 1, 1),
+                lastDay: DateTime.now(),
+                headerStyle: const HeaderStyle(
+                  titleCentered: true,
+                  formatButtonVisible: false,
+                ),
+                calendarStyle: const CalendarStyle(isTodayHighlighted: false),
+              )
+            ],
+          );
+        }
+        Map<DateTime, List<String>> check =
+            _formatting(snapshot.data as List<Chulseok>);
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
-            TableCalendar(
+            TableCalendar<dynamic>(
               focusedDay: DateTime.now(),
               firstDay: DateTime.utc(2023, 1, 1),
               lastDay: DateTime.now(),
@@ -48,7 +74,7 @@ class _ChallengeState extends State<Challenge> {
               ),
               eventLoader: (day) => _getEventForDay(check, day),
               calendarStyle: const CalendarStyle(
-                markerSize: 50,
+                markerSize: 40,
                 markersAnchor: 1,
                 isTodayHighlighted: false,
                 markersAutoAligned: true,
