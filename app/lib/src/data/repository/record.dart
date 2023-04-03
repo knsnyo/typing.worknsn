@@ -1,8 +1,9 @@
 import 'package:app/src/data/models/record.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class RecordRepository {
-  static String url = 'http://0.0.0.0:5000/info/records';
+  static final String url = dotenv.env['RECORD_URL']!;
 
   static Future<Response> insert(Map<String, dynamic> tokens, int speed) async {
     try {

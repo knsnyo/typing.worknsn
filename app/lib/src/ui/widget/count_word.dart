@@ -11,14 +11,8 @@ class CountWord extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: const [
-        Flexible(
-          flex: 1,
-          child: Count(max: 100, category: 'word'),
-        ),
-        Flexible(
-          flex: 2,
-          child: Word(),
-        ),
+        Flexible(flex: 1, child: Count(max: 100, category: 'word')),
+        Flexible(flex: 2, child: Word()),
       ],
     );
   }

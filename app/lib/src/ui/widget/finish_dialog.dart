@@ -12,7 +12,7 @@ class FinishDialog extends AlertDialog {
 
   @override
   Widget build(BuildContext context) {
-    speed = (countViewModel.type / total * 60).round();
+    speed = 0 != total ? (countViewModel.total / total * 60).round() : 0;
     insertRecord();
     return AlertDialog(
       content: Column(

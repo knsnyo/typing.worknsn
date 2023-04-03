@@ -1,8 +1,9 @@
 import 'package:app/src/data/models/short.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ShortRepository {
-  static String url = 'http://0.0.0.0:5000/shorts';
+  static final String url = dotenv.env['SHORT_URL']!;
 
   static Future<Short> get() async {
     try {

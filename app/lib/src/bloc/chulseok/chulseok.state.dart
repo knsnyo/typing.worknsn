@@ -15,7 +15,7 @@ class ChulseokLoading extends ChulseokState {}
 class ChulseokLoadSuccess extends ChulseokState {
   final List<Chulseok> chulseok;
 
-  ChulseokLoadSuccess(this.chulseok);
+  const ChulseokLoadSuccess(this.chulseok);
 
   @override
   List<Object> get props => [chulseok];
@@ -24,7 +24,7 @@ class ChulseokLoadSuccess extends ChulseokState {
 class ChulseokLoadFailure extends ChulseokState {
   final String error;
 
-  ChulseokLoadFailure(this.error);
+  const ChulseokLoadFailure(this.error);
 
   @override
   List<Object> get props => [error];

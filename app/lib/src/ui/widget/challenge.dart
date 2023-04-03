@@ -1,5 +1,4 @@
 import 'package:app/src/data/models/chulseok.dart';
-import 'package:app/src/navigation/navigation.dart';
 import 'package:app/src/viewmodel/chulseok_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -18,7 +17,6 @@ class _ChallengeState extends State<Challenge> {
   void initState() {
     super.initState();
     chulseokViewModel = ChulseokViewModel();
-    chulseokViewModel.init();
   }
 
   @override

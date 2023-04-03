@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class UserRepository {
-  static String url = 'http://0.0.0.0:5000/users';
+  static final String url = dotenv.env['USER_URL']!;
 
   static Future<Response> auto(Map<String, String> tokens) async {
     try {

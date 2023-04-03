@@ -1,8 +1,10 @@
 import 'package:app/src/data/models/word.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class WordRepository {
-  static String url = 'http://0.0.0.0:5000/words';
+  static final String url = dotenv.env['WORD_URL']!;
+
   static Future<Word> get() async {
     try {
       Response res = await Dio().get<dynamic>(url);

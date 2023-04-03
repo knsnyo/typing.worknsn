@@ -15,7 +15,7 @@ class CountViewModel {
 
   int get count => _countModel.count;
   int get max => _countModel.max;
-  int get type => _countModel.total;
+  int get total => _countModel.total;
   String get category => _countModel.category;
 
   set increment(dynamic _) {

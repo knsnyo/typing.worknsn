@@ -11,14 +11,8 @@ class CountPosition extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: const [
-        Flexible(
-          flex: 1,
-          child: Count(max: 100, category: 'position'),
-        ),
-        Flexible(
-          flex: 2,
-          child: Position(),
-        ),
+        Flexible(flex: 1, child: Count(max: 100, category: 'position')),
+        Flexible(flex: 2, child: Position()),
       ],
     );
   }

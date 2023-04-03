@@ -30,7 +30,7 @@ class _CountState extends State<Count> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<dynamic>(
       stream: countViewModel.countStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         int count = (snapshot.data ?? 0) as int;

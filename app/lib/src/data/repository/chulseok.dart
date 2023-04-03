@@ -1,8 +1,9 @@
 import 'package:app/src/data/models/chulseok.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChulseokRepository {
-  static String url = 'http://0.0.0.0:5000/info/chulseoks';
+  static final String url = dotenv.env['CHULSEOK_URL']!;
 
   static Future<List<Chulseok>> getList(Map<String, String> tokens) async {
     try {

@@ -25,7 +25,7 @@ class _RecordState extends State<Record> {
   Widget build(BuildContext context) {
     return StreamBuilder<dynamic>(
       stream: Stream<dynamic>.periodic(const Duration(milliseconds: 100)),
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         total = (stopwatch.elapsedMilliseconds / 1000).floor();
         minute = total ~/ 60;
         second = total % 60;

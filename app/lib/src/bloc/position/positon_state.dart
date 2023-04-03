@@ -1,26 +1,14 @@
-import 'package:app/src/data/models/position.dart';
+part of 'position_bloc.dart';
 
-abstract class PositionState {
-  Position? current;
-  Position? next;
-  PositionState({this.current, this.next});
-}
+abstract class PositionState {}
 
-class InitialPositionState extends PositionState {
-  InitialPositionState() : super();
-}
+class InitialPositionState extends PositionState {}
 
-class LoadingPositionState extends PositionState {
-  LoadingPositionState() : super();
-}
+class LoadingPositionState extends PositionState {}
 
-class SuccessPositionState extends PositionState {
-  SuccessPositionState(Position current, Position next)
-      : super(current: current, next: next);
+class ErrorPositionState extends PositionState {}
 
-  Position get nextPosition => next!;
-}
-
-class FailurePositionState extends PositionState {
-  FailurePositionState() : super();
+class LoadedPositionState extends PositionState {
+  final List<Position> positions;
+  LoadedPositionState(this.positions);
 }

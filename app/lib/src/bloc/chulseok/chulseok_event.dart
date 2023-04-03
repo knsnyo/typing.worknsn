@@ -10,7 +10,7 @@ abstract class ChulseokEvent extends Equatable {
 class ChulseokLoad extends ChulseokEvent {
   final Map<String, String> tokens;
 
-  ChulseokLoad(this.tokens);
+  const ChulseokLoad(this.tokens);
 
   @override
   List<Object> get props => [tokens];

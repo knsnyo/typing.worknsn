@@ -12,10 +12,10 @@ class Position extends StatefulWidget {
 }
 
 class _PositionState extends State<Position> {
-  final PositionViewModel _positionViewModel = PositionViewModel();
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focus = FocusNode();
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late PositionViewModel _positionViewModel;
 
   @override
   void dispose() {
@@ -27,6 +27,7 @@ class _PositionState extends State<Position> {
 
   @override
   Widget build(BuildContext context) {
+    _positionViewModel = PositionViewModel(context);
     final int arguments = ModalRoute.of(context)!.settings.arguments as int;
     _positionViewModel.init(arguments);
     return StreamBuilder(
@@ -66,7 +67,7 @@ class _PositionState extends State<Position> {
                         if (countViewModel.isMax()) {
                           showDialog<AlertDialog>(
                             barrierDismissible: false,
-                            context: scaffoldKey.currentContext ?? context,
+                            context: _scaffoldKey.currentContext ?? context,
                             builder: (BuildContext context) =>
                                 const FinishDialog(),
                           );
