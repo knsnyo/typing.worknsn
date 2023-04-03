@@ -10,10 +10,10 @@ const tokenService = {
   },
   createAccess: (idx: number, id: string): string => {
     if (!idx) {
-      throw new BodyError(`IDX IS NOT VALID`);
+      throw new BodyError(`IDX IS INVALID`);
     }
     if (!id) {
-      throw new BodyError(`ID IS NOT VALID`);
+      throw new BodyError(`ID IS INVALID`);
     }
     return sign(
       {
@@ -22,7 +22,7 @@ const tokenService = {
       },
       JWT_ACCESS!,
       {
-        expiresIn: '1m',
+        expiresIn: '5m',
       }
     );
   },

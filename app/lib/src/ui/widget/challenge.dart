@@ -79,7 +79,7 @@ class _ChallengeState extends State<Challenge> {
                 markersAlignment: Alignment.center,
                 markerDecoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/marker.png'),
+                    image: AssetImage('assets/image/marker.png'),
                   ),
                 ),
               ),

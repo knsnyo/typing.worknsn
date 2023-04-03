@@ -14,7 +14,7 @@ class ChulseokViewModel {
 
   Future<void> getList() async {
     try {
-      await checkTokens();
+      // await checkTokens();
       Map<String, String> tokens = await getTokens();
       List<Chulseok> chulseok = await ChulseokRepository.getList(tokens);
       _chulseokModel.chulseok = chulseok;

@@ -107,48 +107,48 @@ class Menu extends StatelessWidget {
   }
 
   Widget checkMember(BuildContext context) {
-    if (userViewModel.user) {
-      return Flexible(
-        flex: 2,
-        child: Column(
-          children: [
-            const Flexible(
-              child: Center(
-                child: MenuButton(
-                  menuName: 'Setting',
-                  routeName: '/setting',
-                ),
-              ),
-            ),
-            Flexible(
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await userViewModel.signout();
-                    if (userViewModel.user) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(failSnackbar('Sign Out Fail'));
-                    } else {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(successSnackbar('Sign Out Success'));
-                      Navigator.of(context)
-                          .pushNamedAndRemoveUntil('/', (route) => false);
-                    }
-                  },
-                  child: const Text('sign out'),
-                ),
-              ),
-            ),
-          ],
+    if (!userViewModel.user) {
+      return const Flexible(
+        child: Center(
+          child: MenuButton(
+            menuName: 'Sign in',
+            routeName: '/signin',
+          ),
         ),
       );
     }
-    return const Flexible(
-      child: Center(
-        child: MenuButton(
-          menuName: 'Sign in',
-          routeName: '/signin',
-        ),
+    return Flexible(
+      flex: 2,
+      child: Column(
+        children: [
+          const Flexible(
+            child: Center(
+              child: MenuButton(
+                menuName: 'Setting',
+                routeName: '/setting',
+              ),
+            ),
+          ),
+          Flexible(
+            child: Center(
+              child: ElevatedButton(
+                onPressed: () async {
+                  await userViewModel.signout();
+                  if (userViewModel.user) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(failSnackbar('Sign Out Fail'));
+                  } else {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(successSnackbar('Sign Out Success'));
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/', (route) => false);
+                  }
+                },
+                child: const Text('sign out'),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

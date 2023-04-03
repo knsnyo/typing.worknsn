@@ -22,8 +22,8 @@ const userController = {
     try {
       const find: IUser = await userService.findUserById(id);
       await userService.checkPassword(password, find.password);
-      const newAccessToken: string = tokenService.createAccess(find.idx ?? 0, find.id);
-      const newRefreshToken: string = tokenService.createRefresh(find.idx ?? 0, find.id);
+      const newAccessToken: string = tokenService.createAccess(find.idx!, find.id);
+      const newRefreshToken: string = tokenService.createRefresh(find.idx!, find.id);
       return res.status(StatusCode.OK.status).json({
         ...StatusCode.OK,
         accessToken: newAccessToken,
@@ -37,9 +37,10 @@ const userController = {
     const refreshToken: string = req.get('refreshToken') ?? '';
     try {
       tokenService.validate(refreshToken);
-      const data: JwtPayload = tokenService.verifyRefresh(refreshToken);
-      const newAccessToken: string = tokenService.createAccess(data.idx, data.id);
-      const newRefreshToken: string = tokenService.createRefresh(data.idx, data.id);
+      const { idx, id }: JwtPayload = tokenService.verifyRefresh(refreshToken);
+      await userService.findUserById(id);
+      const newAccessToken: string = tokenService.createAccess(idx, id);
+      const newRefreshToken: string = tokenService.createRefresh(idx, id);
       return res.status(StatusCode.OK.status).json({
         ...StatusCode.OK,
         accessToken: newAccessToken,

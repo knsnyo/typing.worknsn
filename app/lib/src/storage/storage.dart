@@ -14,14 +14,14 @@ Future<void> removeTokens() async {
 
 Future<void> checkTokens() async {
   SharedPreferences storage = await SharedPreferences.getInstance();
-  String? accessToken = storage.getString('accessToken');
-  String? refreshToken = storage.getString('refreshToken');
+  String accessToken = storage.getString('accessToken') ?? '';
+  String refreshToken = storage.getString('refreshToken') ?? '';
 
   if (accessToken!.isEmpty) {
     throw Exception('ACCESS TOKEN IS NULL');
   }
   if (refreshToken!.isEmpty) {
-    throw Exception('ACCESS TOKEN IS NULL');
+    throw Exception('REFRESH TOKEN IS NULL');
   }
 }
 

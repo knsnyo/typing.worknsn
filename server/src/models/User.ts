@@ -11,9 +11,9 @@ const User = {
       throw new QueryError(`${err}`);
     }
   },
-  findUserByID: async (id: string): Promise<IUser> => {
+  findUserById: async (id: string): Promise<IUser> => {
     try {
-      const [result]: Array<IUser> = await db.query(queries.user.findUserByID, [id]);
+      const [result]: Array<IUser> = await db.query(queries.user.findUserById, [id]);
       return result;
     } catch (err: unknown) {
       throw new QueryError(`${err}`);

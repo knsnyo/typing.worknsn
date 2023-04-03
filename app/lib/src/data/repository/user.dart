@@ -23,8 +23,7 @@ class UserRepository {
 
   static Future<Response> signin(Map<String, String> user) async {
     try {
-      Response res = await Dio().post<dynamic>('$url/signin', data: user);
-      return res;
+      return await Dio().post<dynamic>('$url/signin', data: user);
     } catch (err) {
       throw Exception('DIO ERROR');
     }

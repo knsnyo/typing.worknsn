@@ -17,6 +17,7 @@ class ChulseokRepository {
       }
       return chulseoks;
     } catch (err) {
+      print(err);
       throw Exception('DIO ERROR');
     }
   }

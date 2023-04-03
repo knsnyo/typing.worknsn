@@ -8,7 +8,7 @@ const userService = {
     if (!id) {
       throw new BodyError(`ID IS INVALID`);
     }
-    const user: IUser = await User.findUserByID(id);
+    const user: IUser = await User.findUserById(id);
     if (user) {
       throw new SignupError(`USER ALREADY EXIST`);
     }
@@ -32,7 +32,7 @@ const userService = {
     if (!id) {
       throw new BodyError(`ID IS INVALID`);
     }
-    const user: IUser = await User.findUserByID(id);
+    const user: IUser = await User.findUserById(id);
     if (!user) {
       throw new NotFoundError(`USER NOT FOUND`);
     }
@@ -47,7 +47,7 @@ const userService = {
     }
     const validated: boolean = await compare(userPassword, dbPassword);
     if (!validated) {
-      throw new SigninError(`PASSWORD IS NOT CORRECT`);
+      throw new SigninError(`PASSWORD IS INVALID`);
     }
   },
 };
