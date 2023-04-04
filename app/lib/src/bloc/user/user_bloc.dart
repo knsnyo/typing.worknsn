@@ -1,11 +1,13 @@
 import 'package:app/src/models/user_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class UserBloc extends Cubit<UserModel> {
-  UserBloc() : super(UserModel());
+part 'user_event.dart';
 
-  void auto() {}
-  void signup() {}
-  void signin() {}
-  void signout() {}
+class UserBloc extends Bloc<UserEvent, UserModel> {
+  UserBloc() : super(UserModel(user: false)) {
+    on<UserSigninEvent>((UserEvent event, Emitter<UserModel> emit) =>
+        emit(UserModel(user: true)));
+    on<UserSignoutEvent>((UserEvent event, Emitter<UserModel> emit) =>
+        emit(UserModel(user: false)));
+  }
 }

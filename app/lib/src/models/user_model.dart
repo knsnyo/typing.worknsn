@@ -1,6 +1,9 @@
 class UserModel {
-  bool _user = false;
+  bool user;
+  UserModel({required this.user});
 
-  bool get user => _user;
-  set user(bool user) => _user = user;
+  UserModel copyWith(bool user) {
+    print('UserModel: $user');
+    return UserModel(user: user);
+  }
 }

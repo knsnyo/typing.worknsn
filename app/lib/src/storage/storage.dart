@@ -1,3 +1,4 @@
+import 'package:app/src/utils/exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> setTokens(String accessToken, String refreshToken) async {
@@ -18,10 +19,10 @@ Future<void> checkTokens() async {
   String refreshToken = storage.getString('refreshToken') ?? '';
 
   if ('' == accessToken) {
-    throw Exception('ACCESS TOKEN IS NULL');
+    throw TokenException(message: 'ACCESS TOKEN IS NULL');
   }
   if ('' == refreshToken) {
-    throw Exception('REFRESH TOKEN IS NULL');
+    throw TokenException(message: 'REFRESH TOKEN IS NULL');
   }
 }
 
@@ -30,10 +31,10 @@ Future<Map<String, String>> getTokens() async {
   String accessToken = storage.getString('accessToken') ?? '';
   String refreshToken = storage.getString('refreshToken') ?? '';
   if ('' == accessToken) {
-    throw Exception('ACCESS TOKEN IS NULL');
+    throw TokenException(message: 'ACCESS TOKEN IS NULL');
   }
   if ('' == refreshToken) {
-    throw Exception('REFRESH TOKEN IS NULL');
+    throw TokenException(message: 'REFRESH TOKEN IS NULL');
   }
 
   return {'accessToken': accessToken, 'refreshToken': refreshToken};

@@ -1,9 +1,11 @@
-import 'package:app/src/navigation/navigation.dart';
+import 'package:app/src/bloc/user/user_bloc.dart';
 import 'package:app/src/utils/title_bar.dart';
 import 'package:app/src/utils/screen_padding.dart';
 import 'package:app/src/utils/snack_bar.dart';
+import 'package:app/src/viewmodel/user_view_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -26,6 +28,8 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
+    UserViewModel userViewModel =
+        UserViewModel(userBloc: BlocProvider.of<UserBloc>(context));
     return Scaffold(
       appBar: titleBar(),
       body: Container(
@@ -91,15 +95,23 @@ class _SignupState extends State<Signup> {
                         }
                         String id = _idController.text;
                         String password = _passwordController.text;
-                        Response res = await userViewModel.signup(id, password);
-                        if (null == res) {
+                        try {
+                          Response res =
+                              await userViewModel.signup(id, password);
+                          if (!mounted) {
+                            return;
+                          }
+                          if (201 != res.statusCode) {
+                            throw '';
+                          }
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(successSnackbar('Sign Up Success'));
+                          Navigator.pop(context);
+                        } catch (err) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(failSnackbar('Sign Up Fail'));
                           return;
                         }
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(successSnackbar('Sign Up Success'));
-                        Navigator.pop(context);
                       },
                       child: const Text('Sign up', textScaleFactor: 1.0),
                     ),

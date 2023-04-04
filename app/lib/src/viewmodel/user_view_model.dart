@@ -1,18 +1,14 @@
 import 'dart:async';
+import 'package:app/src/bloc/user/user_bloc.dart';
 import 'package:app/src/data/repository/user.dart';
-import 'package:app/src/models/user_model.dart';
 import 'package:app/src/storage/storage.dart';
+import 'package:app/src/utils/exception.dart';
 import 'package:dio/dio.dart';
 
 class UserViewModel {
-  final UserModel _userModel = UserModel();
-  final StreamController<bool> _userController =
-      StreamController<bool>.broadcast();
-  Stream<bool> get userStream => _userController.stream;
+  final UserBloc _userBloc;
 
-  bool get user => _userModel.user;
-
-  void init() => _userController.sink.add(_userModel.user);
+  UserViewModel({required UserBloc userBloc}) : _userBloc = userBloc;
 
   Future<void> auto() async {
     try {
@@ -22,41 +18,41 @@ class UserViewModel {
       String accessToken = res.data['accessToken'] as String;
       String refreshToken = res.data['refreshToken'] as String;
       await setTokens(accessToken, refreshToken);
-      _userModel.user = true;
-      _userController.sink.add(_userModel.user);
+      _userBloc.add(UserSigninEvent());
     } catch (err) {
-      _userController.sink.addError(err);
+      throw ViewModelException(message: 'UserViewModel.auto()');
     }
   }
 
   Future<Response> signup(String id, String password) async {
     Map<String, String> user = {'id': id, 'password': password};
-    return await UserRepository.signup(user);
+    Response res = await UserRepository.signup(user);
+    if (201 != res.statusCode) {
+      throw ViewModelException(message: 'UserViewModel.signu()');
+    }
+    return res;
   }
 
-  Future<void> signin(String id, String password) async {
+  Future<Response> signin(String id, String password) async {
     Map<String, String> user = {'id': id, 'password': password};
     try {
       Response res = await UserRepository.signin(user);
       String accessToken = res.data['accessToken'] as String;
       String refreshToken = res.data['refreshToken'] as String;
       await setTokens(accessToken, refreshToken);
-      _userModel.user = true;
-      _userController.sink.add(_userModel.user);
+      _userBloc.add(UserSigninEvent());
+      return res;
     } catch (err) {
-      _userController.sink.addError(err);
+      throw ViewModelException(message: 'UserViewModel.signin()');
     }
   }
 
   Future<void> signout() async {
     try {
       await removeTokens();
-      _userModel.user = false;
-      _userController.sink.add(_userModel.user);
+      _userBloc.add(UserSignoutEvent());
     } catch (err) {
-      _userController.sink.addError(err);
+      throw ViewModelException(message: 'UserViewModel.signout()');
     }
   }
-
-  void dispose() => _userController.close();
 }
