@@ -17,10 +17,10 @@ Future<void> checkTokens() async {
   String accessToken = storage.getString('accessToken') ?? '';
   String refreshToken = storage.getString('refreshToken') ?? '';
 
-  if (accessToken!.isEmpty) {
+  if ('' == accessToken) {
     throw Exception('ACCESS TOKEN IS NULL');
   }
-  if (refreshToken!.isEmpty) {
+  if ('' == refreshToken) {
     throw Exception('REFRESH TOKEN IS NULL');
   }
 }
@@ -29,10 +29,10 @@ Future<Map<String, String>> getTokens() async {
   SharedPreferences storage = await SharedPreferences.getInstance();
   String accessToken = storage.getString('accessToken') ?? '';
   String refreshToken = storage.getString('refreshToken') ?? '';
-  if (accessToken.isEmpty) {
+  if ('' == accessToken) {
     throw Exception('ACCESS TOKEN IS NULL');
   }
-  if (refreshToken.isEmpty) {
+  if ('' == refreshToken) {
     throw Exception('REFRESH TOKEN IS NULL');
   }
 
