@@ -1,21 +1,22 @@
 import 'package:app/src/data/models/record.dart';
+import 'package:app/src/utils/custom_error.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class RecordRepository {
-  static final String url = dotenv.env['RECORD_URL']!;
+  final String url = dotenv.env['RECORD_URL']!;
 
-  static Future<Response> insert(Map<String, dynamic> tokens, int speed) async {
+  Future<Response> insert(Map<String, dynamic> tokens, int speed) async {
     try {
       Response res = await Dio(BaseOptions(headers: tokens))
           .post<dynamic>(url, data: {'speed': speed});
       return res;
     } catch (err) {
-      throw Exception('DIO ERROR');
+      throw CustomDioError(message: 'RecordRepository.auto()');
     }
   }
 
-  static Future<List<Record>> getInfo(Map<String, String> tokens) async {
+  Future<List<Record>> get(Map<String, String> tokens) async {
     try {
       Response res = await Dio(BaseOptions(headers: tokens)).get<dynamic>(url);
       List<Record> records = (res.data['record'] as List<Record>)
@@ -23,7 +24,7 @@ class RecordRepository {
           .toList();
       return records;
     } catch (err) {
-      throw Exception('DIO ERROR');
+      throw CustomDioError(message: 'RecordRepository.get()');
     }
   }
 }

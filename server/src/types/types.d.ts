@@ -6,7 +6,7 @@ interface IUser {
 
 interface IPosition {
   idx?: number;
-  letter: string;
+  position: string;
 }
 
 interface IWord {

@@ -1,8 +1,12 @@
-import 'package:app/src/ui/widget/count.dart';
-import 'package:app/src/ui/widget/finish_dialog.dart';
+import 'package:app/src/bloc/count/count_bloc.dart';
+import 'package:app/src/bloc/position/position_bloc.dart';
+import 'package:app/src/data/repository/position_repository.dart';
+import 'package:app/src/models/position_model.dart';
 import 'package:app/src/ui/widget/record.dart';
+import 'package:app/src/viewmodel/count_view_model.dart';
 import 'package:app/src/viewmodel/position_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Position extends StatefulWidget {
   const Position({super.key});
@@ -14,26 +18,28 @@ class Position extends StatefulWidget {
 class _PositionState extends State<Position> {
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focus = FocusNode();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  late PositionViewModel _positionViewModel;
-
   @override
   void dispose() {
     super.dispose();
     _textEditingController.dispose();
     _focus.unfocus();
-    _positionViewModel.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _positionViewModel = PositionViewModel(context);
-    final int arguments = ModalRoute.of(context)!.settings.arguments as int;
-    _positionViewModel.init(arguments);
-    return StreamBuilder(
-      stream: _positionViewModel.positionStream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) {
+    PositionRepository positionRepository = PositionRepository();
+    PositionViewModel positionViewModel = PositionViewModel(
+      positionBloc: BlocProvider.of<PositionBloc>(context),
+      positionRepository: positionRepository,
+    );
+    final int level = ModalRoute.of(context)!.settings.arguments as int;
+    positionViewModel.init(level);
+    CountViewModel countViewModel = CountViewModel(
+      countBloc: BlocProvider.of<CountBloc>(context),
+    );
+    return BlocBuilder<PositionBloc, PositionModel>(
+      builder: (BuildContext context, PositionModel state) {
+        if (state.list.isEmpty) {
           return const CircularProgressIndicator();
         }
         return Row(
@@ -45,7 +51,7 @@ class _PositionState extends State<Position> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text(snapshot.data[0].letter as String, textScaleFactor: 4.5),
+                  Text(state.list[0].position, textScaleFactor: 4.5),
                   Offstage(
                     offstage: true,
                     child: TextFormField(
@@ -57,20 +63,11 @@ class _PositionState extends State<Position> {
                           stopwatch.start();
                         }
                         if (_textEditingController.text ==
-                            snapshot.data[0].letter) {
-                          await _positionViewModel.next();
-                          countViewModel.increment = null;
-                          countViewModel.total = 1;
+                            state.list[0].position) {
+                          await positionViewModel.next(level);
+                          countViewModel.increment(1);
                         } else {
-                          countViewModel.decrement = null;
-                        }
-                        if (countViewModel.isMax()) {
-                          showDialog<AlertDialog>(
-                            barrierDismissible: false,
-                            context: _scaffoldKey.currentContext ?? context,
-                            builder: (BuildContext context) =>
-                                const FinishDialog(),
-                          );
+                          countViewModel.decrement();
                         }
                         _textEditingController.text = '';
                       },
@@ -81,7 +78,7 @@ class _PositionState extends State<Position> {
             ),
             Flexible(
               child: Text(
-                snapshot.data[1].letter as String,
+                state.list[1].position,
                 textScaleFactor: 4.5,
                 style: const TextStyle(color: Colors.grey),
               ),

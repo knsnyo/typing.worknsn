@@ -18,6 +18,17 @@ const Position = {
     }
     throw new NotFoundError(`LETTER IS NOT FOUND`);
   },
+  init: (level: number): Array<string> => {
+    if (alphabet[level] && alphabet[level].length > 0) {
+      let alphabets: Array<string> = [];
+      for (let i: number = 0; i < 2; i += 1) {
+        const random: number = Math.floor(Math.random() * alphabet[level].length);
+        alphabets = [...alphabets, alphabet[level][random]];
+      }
+      return alphabets;
+    }
+    throw new NotFoundError(`LETTER IS NOT FOUND`);
+  },
 };
 
 export default Position;

@@ -1,42 +1,27 @@
+import 'package:app/src/bloc/chulseok/chulseok_bloc.dart';
 import 'package:app/src/data/models/chulseok.dart';
+import 'package:app/src/data/repository/chulseok_repository.dart';
+import 'package:app/src/models/chulseok_model.dart';
 import 'package:app/src/viewmodel/chulseok_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-late ChulseokViewModel chulseokViewModel;
-
-class Challenge extends StatefulWidget {
+class Challenge extends StatelessWidget {
   const Challenge({super.key});
 
   @override
-  State<Challenge> createState() => _ChallengeState();
-}
-
-class _ChallengeState extends State<Challenge> {
-  @override
-  void initState() {
-    super.initState();
-    chulseokViewModel = ChulseokViewModel();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    chulseokViewModel.getList();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    chulseokViewModel.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: chulseokViewModel.chulseokStream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) {
+    ChulseokRepository chulseokRepository = ChulseokRepository();
+    ChulseokViewModel chulseokViewModel = ChulseokViewModel(
+      chulseokBloc: BlocProvider.of<ChulseokBloc>(context),
+      chulseokRepository: chulseokRepository,
+    );
+    chulseokViewModel.get();
+    return BlocBuilder<ChulseokBloc, ChulseokModel>(
+      builder: (BuildContext context, ChulseokModel state) {
+        if (state.list.isNotEmpty) {
+          Map<DateTime, List<String>> check = _formatting(state.list);
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,13 +35,23 @@ class _ChallengeState extends State<Challenge> {
                   titleCentered: true,
                   formatButtonVisible: false,
                 ),
-                calendarStyle: const CalendarStyle(isTodayHighlighted: false),
+                eventLoader: (day) => _getEventForDay(check, day),
+                calendarStyle: const CalendarStyle(
+                  markerSize: 40,
+                  markersAnchor: 1,
+                  isTodayHighlighted: false,
+                  markersAutoAligned: true,
+                  markersAlignment: Alignment.center,
+                  markerDecoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/image/marker.png'),
+                    ),
+                  ),
+                ),
               )
             ],
           );
         }
-        Map<DateTime, List<String>> check =
-            _formatting(snapshot.data as List<Chulseok>);
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,18 +65,8 @@ class _ChallengeState extends State<Challenge> {
                 titleCentered: true,
                 formatButtonVisible: false,
               ),
-              eventLoader: (day) => _getEventForDay(check, day),
               calendarStyle: const CalendarStyle(
-                markerSize: 40,
-                markersAnchor: 1,
                 isTodayHighlighted: false,
-                markersAutoAligned: true,
-                markersAlignment: Alignment.center,
-                markerDecoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/image/marker.png'),
-                  ),
-                ),
               ),
             )
           ],
@@ -107,5 +92,3 @@ class _ChallengeState extends State<Challenge> {
     return data[searchDate] ?? [];
   }
 }
-
-/// https://velog.io/@jun7332568/%ED%94%8C%EB%9F%AC%ED%84%B0flutter-%EB%8B%AC%EB%A0%A5-Event-%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0-Tablecalendar-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC

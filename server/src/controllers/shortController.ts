@@ -22,6 +22,14 @@ const shortController = {
       return errorCatch(err, res);
     }
   },
+  init: async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const shorts: Array<IShort> = await shortService.init();
+      return res.status(StatusCode.OK.status).json(shorts);
+    } catch (err: unknown) {
+      return errorCatch(err, res);
+    }
+  },
 };
 
 export default shortController;

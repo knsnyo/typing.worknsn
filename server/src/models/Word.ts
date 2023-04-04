@@ -1,18 +1,29 @@
 import { db } from '@/config/db';
 import queries from '@/queries';
 import type { IWord } from '@/types/types';
-import { QueryError } from '@/utils/Error';
+import { QuerySyntexError } from '@/utils/Error';
 
 const Word = {
   insert: async ({ word }: IWord): Promise<void> => {
-    await db.execute(queries.word.insert, [word]);
+    try {
+      await db.execute(queries.word.insert, [word]);
+    } catch (err: unknown) {
+      throw new QuerySyntexError(`${err}`);
+    }
   },
   select: async (): Promise<IWord> => {
     try {
       const [word]: Array<IWord> = await db.query(queries.word.select);
       return word;
     } catch (err: unknown) {
-      throw new QueryError(`${err}`);
+      throw new QuerySyntexError(`${err}`);
+    }
+  },
+  init: async (): Promise<Array<IWord>> => {
+    try {
+      return await db.query(queries.word.init);
+    } catch (err: unknown) {
+      throw new QuerySyntexError(`${err}`);
     }
   },
 };

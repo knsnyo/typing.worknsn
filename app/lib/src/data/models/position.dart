@@ -1,9 +1,9 @@
 class Position {
-  final String letter;
+  final String position;
 
-  const Position({required this.letter});
+  const Position({required this.position});
 
   factory Position.fromJson(Map<String, dynamic> json) => Position(
-        letter: json['letter'] as String,
+        position: json['position'] as String,
       );
 }

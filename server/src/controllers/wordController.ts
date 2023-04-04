@@ -22,6 +22,14 @@ const wordController = {
       return errorCatch(err, res);
     }
   },
+  init: async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const words: Array<IWord> = await wordService.init();
+      return res.status(StatusCode.OK.status).json(words);
+    } catch (err: unknown) {
+      return errorCatch(err, res);
+    }
+  },
 };
 
 export default wordController;

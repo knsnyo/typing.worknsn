@@ -1,6 +1,6 @@
 import Short from '@/models/Short';
 import { IShort } from '@/types/types';
-import { BodyError, NotFoundError } from '@/utils/Error';
+import { BodyError, NotFoundError, QueryResponseError } from '@/utils/Error';
 
 const shortService = {
   insert: async ({ name, short }: IShort): Promise<void> => {
@@ -18,6 +18,13 @@ const shortService = {
       throw new NotFoundError(`SHORT IS NOT FOUND`);
     }
     return short;
+  },
+  init: async (): Promise<Array<IShort>> => {
+    const shorts: Array<IShort> = await Short.init();
+    if (2 != shorts.length) {
+      throw new QueryResponseError(`WORDS.LENGTH IS NOT 2`);
+    }
+    return shorts;
   },
 };
 export default shortService;

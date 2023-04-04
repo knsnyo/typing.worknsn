@@ -2,11 +2,12 @@ part of 'position_bloc.dart';
 
 abstract class PositionEvent {}
 
-class InitialPositionEvent extends PositionEvent {
-  final int level;
-  InitialPositionEvent(this.level);
+class PositionInitEvent extends PositionEvent {
+  List<Position> list;
+  PositionInitEvent({required this.list});
 }
 
-class NextPositionEvent extends PositionEvent {
-  NextPositionEvent();
+class PositionNextEvent extends PositionEvent {
+  Position next;
+  PositionNextEvent({required this.next});
 }

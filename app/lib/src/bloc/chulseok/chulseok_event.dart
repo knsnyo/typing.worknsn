@@ -1,17 +1,8 @@
-import 'package:equatable/equatable.dart';
+part of 'chulseok_bloc.dart';
 
-abstract class ChulseokEvent extends Equatable {
-  const ChulseokEvent();
+abstract class ChulseokEvent {}
 
-  @override
-  List<Object> get props => [];
-}
-
-class ChulseokLoad extends ChulseokEvent {
-  final Map<String, String> tokens;
-
-  const ChulseokLoad(this.tokens);
-
-  @override
-  List<Object> get props => [tokens];
+class ChulseokLoadEvent extends ChulseokEvent {
+  List<Chulseok> list;
+  ChulseokLoadEvent({required this.list});
 }

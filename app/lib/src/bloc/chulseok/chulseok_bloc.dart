@@ -1,22 +1,13 @@
-import 'package:app/src/bloc/chulseok/chulseok.state.dart';
-import 'package:app/src/bloc/chulseok/chulseok_event.dart';
-import 'package:app/src/data/models/chulseok.dart';
-import 'package:app/src/data/repository/chulseok.dart';
+import 'package:app/src/models/chulseok_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:app/src/data/models/chulseok.dart';
 
-class ChulseokBloc extends Bloc<ChulseokEvent, ChulseokState> {
-  ChulseokBloc() : super(ChulseokInitial());
+part 'chulseok_event.dart';
 
-  Stream<ChulseokState> mapEventToState(ChulseokEvent event) async* {
-    if (event is ChulseokLoad) {
-      yield ChulseokLoading();
-      try {
-        List<Chulseok> chulseok =
-            await ChulseokRepository.getList(event.tokens);
-        yield ChulseokLoadSuccess(chulseok);
-      } catch (err) {
-        yield ChulseokLoadFailure(err.toString());
-      }
-    }
+class ChulseokBloc extends Bloc<ChulseokEvent, ChulseokModel> {
+  ChulseokBloc() : super(ChulseokModel(list: [])) {
+    on<ChulseokLoadEvent>(
+        (ChulseokLoadEvent event, Emitter<ChulseokModel> emit) =>
+            emit(ChulseokModel(list: event.list)));
   }
 }

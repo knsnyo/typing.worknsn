@@ -1,8 +1,9 @@
 import Position from '@/models/Position';
-import { NotFoundError, ParamsError } from '@/utils/Error';
+import { IPosition } from '@/types/types';
+import { NotFoundError, ParamsError, QueryResponseError } from '@/utils/Error';
 
 const positionService = {
-  level: (level: string): string => {
+  select: (level: string): IPosition => {
     const lv: number = parseInt(level);
     if (isNaN(lv)) {
       throw new ParamsError('PARAMS IS NOT NUMBER');
@@ -11,7 +12,21 @@ const positionService = {
     if (!letter) {
       throw new NotFoundError(`LETTER IS NOT FOUND`);
     }
-    return letter;
+    return { position: letter } as IPosition;
+  },
+  init: (level: string): Array<IPosition> => {
+    const lv: number = parseInt(level);
+    if (isNaN(lv)) {
+      throw new ParamsError('PARAMS IS NOT NUMBER');
+    }
+    const letters: Array<string> = Position.init(lv);
+    if (!letters) {
+      throw new NotFoundError(`LETTER IS NOT FOUND`);
+    }
+    if (2 != letters.length) {
+      throw new QueryResponseError(`LETTERS.LENGTH IS NOT 2`);
+    }
+    return [{ position: letters[0] }, { position: letters[1] }] as Array<IPosition>;
   },
 };
 

@@ -1,34 +1,34 @@
 import 'dart:async';
+import 'package:app/src/bloc/word/word_bloc.dart';
 import 'package:app/src/data/models/word.dart';
-import 'package:app/src/data/repository/word.dart';
-import 'package:app/src/models/word_model.dart';
+import 'package:app/src/data/repository/word_repository.dart';
+import 'package:app/src/utils/custom_error.dart';
 
 class WordViewModel {
-  final WordModel _wordModel = WordModel();
-  final StreamController<List<Word>> _wordController =
-      StreamController<List<Word>>.broadcast();
-  Stream<List<Word>> get wordStream => _wordController.stream;
+  final WordBloc _wordBloc;
+  final WordRepository _wordRepository;
+
+  WordViewModel({
+    required WordBloc wordBloc,
+    required WordRepository wordRepository,
+  })  : _wordBloc = wordBloc,
+        _wordRepository = wordRepository;
 
   Future<void> init() async {
     try {
-      Word currnet = await WordRepository.get();
-      Word next = await WordRepository.get();
-      _wordModel.init(currnet, next);
-      _wordController.sink.add(_wordModel.list);
+      List<Word> list = await _wordRepository.init();
+      _wordBloc.add(WordInitEvent(list: list));
     } catch (err) {
-      _wordController.sink.addError(err);
+      throw ViewModelError(message: 'WordViewModel.init()');
     }
   }
 
   Future<void> next() async {
     try {
-      Word next = await WordRepository.get();
-      _wordModel.next(next);
-      _wordController.sink.add(_wordModel.list);
+      Word next = await _wordRepository.get();
+      _wordBloc.add(WordNextEvent(next: next));
     } catch (err) {
-      _wordController.sink.addError(err);
+      throw ViewModelError(message: 'WordViewModel.next()');
     }
   }
-
-  void dispose() => _wordController.close();
 }

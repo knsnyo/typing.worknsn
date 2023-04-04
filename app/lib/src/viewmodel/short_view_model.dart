@@ -1,34 +1,34 @@
 import 'dart:async';
+import 'package:app/src/bloc/short/short_bloc.dart';
 import 'package:app/src/data/models/short.dart';
-import 'package:app/src/data/repository/short.dart';
-import 'package:app/src/models/short_model.dart';
+import 'package:app/src/data/repository/short_repository.dart';
+import 'package:app/src/utils/custom_error.dart';
 
 class ShortViewModel {
-  final ShortModel _shortModel = ShortModel();
-  final StreamController<List<Short>> _shortController =
-      StreamController<List<Short>>.broadcast();
-  Stream<List<Short>> get shortStream => _shortController.stream;
+  final ShortBloc _shortBloc;
+  final ShortRepository _shortRepository;
+
+  ShortViewModel({
+    required ShortBloc shortBloc,
+    required ShortRepository shortRepository,
+  })  : _shortBloc = shortBloc,
+        _shortRepository = shortRepository;
 
   Future<void> init() async {
     try {
-      Short current = await ShortRepository.get();
-      Short next = await ShortRepository.get();
-      _shortModel.init(current, next);
-      _shortController.sink.add(_shortModel.list);
+      List<Short> list = await _shortRepository.init();
+      _shortBloc.add(ShortInitEvent(list: list));
     } catch (err) {
-      _shortController.sink.addError(err);
+      throw ViewModelError(message: 'ShortViewModel.init()');
     }
   }
 
   Future<void> next() async {
     try {
-      Short next = await ShortRepository.get();
-      _shortModel.next(next);
-      _shortController.sink.add(_shortModel.list);
+      Short next = await _shortRepository.get();
+      _shortBloc.add(ShortNextEvent(next: next));
     } catch (err) {
-      _shortController.sink.addError(err);
+      throw ViewModelError(message: 'ShortViewModel.next()');
     }
   }
-
-  void dispose() => _shortController.close();
 }

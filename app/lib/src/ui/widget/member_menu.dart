@@ -1,4 +1,5 @@
 import 'package:app/src/bloc/user/user_bloc.dart';
+import 'package:app/src/data/repository/user_repository.dart';
 import 'package:app/src/models/user_model.dart';
 import 'package:app/src/ui/widget/menu_button.dart';
 import 'package:app/src/utils/snack_bar.dart';
@@ -11,8 +12,11 @@ class MemberMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserViewModel userViewModel =
-        UserViewModel(userBloc: BlocProvider.of<UserBloc>(context));
+    UserRepository userRepository = UserRepository();
+    UserViewModel userViewModel = UserViewModel(
+      userBloc: BlocProvider.of<UserBloc>(context),
+      userRepository: userRepository,
+    );
     return BlocBuilder<UserBloc, UserModel>(
       builder: (BuildContext context, UserModel state) {
         if (!state.user) {

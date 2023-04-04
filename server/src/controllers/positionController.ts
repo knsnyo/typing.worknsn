@@ -2,13 +2,23 @@ import { Request, Response } from 'express';
 import StatusCode from '@/utils/StatusCode';
 import positionService from '@/services/positionService';
 import errorCatch from '@/utils/errJson';
+import { IPosition } from '@/types/types';
 
 const positionController = {
-  level: async (req: Request, res: Response): Promise<Response> => {
+  level: (req: Request, res: Response): Response => {
     const level: string = req.params.level;
     try {
-      const letter = positionService.level(level);
-      return res.status(StatusCode.OK.status).json({ letter: letter });
+      const position: IPosition = positionService.select(level);
+      return res.status(StatusCode.OK.status).json(position);
+    } catch (err: unknown) {
+      return errorCatch(err, res);
+    }
+  },
+  init: (req: Request, res: Response): Response => {
+    const level: string = req.params.level;
+    try {
+      const positions: Array<IPosition> = positionService.init(level);
+      return res.status(StatusCode.OK.status).json(positions);
     } catch (err: unknown) {
       return errorCatch(err, res);
     }

@@ -1,5 +1,10 @@
+import 'package:app/src/bloc/chulseok/chulseok_bloc.dart';
+import 'package:app/src/bloc/count/count_bloc.dart';
 import 'package:app/src/bloc/position/position_bloc.dart';
+import 'package:app/src/bloc/record/record_bloc.dart';
+import 'package:app/src/bloc/short/short_bloc.dart';
 import 'package:app/src/bloc/user/user_bloc.dart';
+import 'package:app/src/bloc/word/word_bloc.dart';
 import 'package:app/src/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +25,16 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<PositionBloc>(
             create: (BuildContext context) => PositionBloc()),
-        BlocProvider<UserBloc>(create: (BuildContext context) => UserBloc())
+        BlocProvider<UserBloc>(create: (BuildContext context) => UserBloc()),
+        BlocProvider<WordBloc>(create: (BuildContext context) => WordBloc()),
+        BlocProvider<ShortBloc>(create: (BuildContext context) => ShortBloc()),
+        BlocProvider<PositionBloc>(
+            create: (BuildContext context) => PositionBloc()),
+        BlocProvider<RecordBloc>(
+            create: (BuildContext context) => RecordBloc()),
+        BlocProvider<ChulseokBloc>(
+            create: (BuildContext context) => ChulseokBloc()),
+        BlocProvider<CountBloc>(create: (BuildContext context) => CountBloc()),
       ],
       child: const Navigation(),
     );

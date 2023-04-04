@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'package:app/src/utils/time_format.dart';
 import 'package:flutter/material.dart';
 
+int total = 0;
+int minute = 0;
+int second = 0;
 late Stopwatch stopwatch;
-late int total;
-late int minute;
-late int second;
 
 class Record extends StatefulWidget {
   const Record({super.key});
@@ -30,18 +31,10 @@ class _RecordState extends State<Record> {
         minute = total ~/ 60;
         second = total % 60;
         return Text(
-          "${percent2D(minute)}:${percent2D(second)}",
+          "${timeFormat(minute)}:${timeFormat(second)}",
           textScaleFactor: 1.5,
         );
       },
     );
   }
-}
-
-/// %2d
-String percent2D(int number) {
-  if (number < 10) {
-    return '0$number';
-  }
-  return '$number';
 }

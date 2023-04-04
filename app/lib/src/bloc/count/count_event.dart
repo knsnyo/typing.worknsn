@@ -1,31 +1,16 @@
 part of 'count_bloc.dart';
 
-abstract class CountEvent extends Equatable {
-  const CountEvent();
+abstract class CountEvent {}
 
-  @override
-  List<Object> get props => [];
+class CountPositionEvent extends CountEvent {}
+
+class CountWordEvent extends CountEvent {}
+
+class CountShortEvent extends CountEvent {}
+
+class CountInCrementTotalEvent extends CountEvent {
+  int total;
+  CountInCrementTotalEvent({required this.total});
 }
 
-class CountInitEvent extends CountEvent {
-  final int max;
-  final String category;
-
-  const CountInitEvent(this.max, this.category);
-
-  @override
-  List<Object> get props => [max, category];
-}
-
-class CountIncrementEvent extends CountEvent {}
-
-class CountDecrementEvent extends CountEvent {}
-
-class CountTotalEvent extends CountEvent {
-  final int current;
-
-  const CountTotalEvent(this.current);
-
-  @override
-  List<Object> get props => [current];
-}
+class CountDecrementTotalEvent extends CountEvent {}

@@ -16,7 +16,14 @@ class DBError extends ErrorWithStatusCode {
   }
 }
 
-class QueryError extends ErrorWithStatusCode {
+class QuerySyntexError extends ErrorWithStatusCode {
+  constructor(message: string) {
+    super(message, StatusCode.BAD_REQUEST);
+    this.name = `QUERY ERROR`;
+  }
+}
+
+class QueryResponseError extends ErrorWithStatusCode {
   constructor(message: string) {
     super(message, StatusCode.BAD_REQUEST);
     this.name = `QUERY ERROR`;
@@ -71,4 +78,4 @@ class NotFoundError extends ErrorWithStatusCode {
   }
 }
 
-export { ErrorWithStatusCode, DBError, ParamsError, BodyError, QueryError, TokenError, SigninError, SignupError, NotFoundError };
+export { ErrorWithStatusCode, DBError, ParamsError, BodyError, QuerySyntexError, QueryResponseError, TokenError, SigninError, SignupError, NotFoundError };

@@ -1,37 +1,36 @@
+import 'package:app/src/bloc/count/count_bloc.dart';
+import 'package:app/src/bloc/record/record_bloc.dart';
 import 'package:app/src/bloc/user/user_bloc.dart';
-import 'package:app/src/ui/widget/count.dart';
+import 'package:app/src/data/repository/record_repository.dart';
+import 'package:app/src/models/count_model.dart';
 import 'package:app/src/ui/widget/record.dart';
+import 'package:app/src/utils/time_format.dart';
 import 'package:app/src/viewmodel/record_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-int speed = 0;
-RecordViewModel _recordViewModel = RecordViewModel();
-
 class FinishDialog extends AlertDialog {
   const FinishDialog({super.key});
 
-  void insertRecord() async {
-    if ('short' != countViewModel.category) {
-      return;
-    }
-    await _recordViewModel.insert(speed);
-  }
-
   @override
   Widget build(BuildContext context) {
-    speed = 0 != total ? (countViewModel.total / total * 60).round() : 0;
+    RecordRepository recordRepository = RecordRepository();
+    RecordViewModel recordViewModel = RecordViewModel(
+      recordBloc: BlocProvider.of<RecordBloc>(context),
+      recordRepository: recordRepository,
+    );
+    Category category = BlocProvider.of<CountBloc>(context).state.category;
+    int total = BlocProvider.of<CountBloc>(context).state.total;
+    int time = 100;
+    int speed = (total / time * 60).round();
     bool isSignin = BlocProvider.of<UserBloc>(context).state.user;
-    if (isSignin) {
-      insertRecord();
-    }
     return AlertDialog(
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'time ${percent2D(minute)}:${percent2D(second)}',
+            'time ${timeFormat(minute)}:${timeFormat(second)}',
             textScaleFactor: 1.5,
           ),
           Text('speed: $speed', textScaleFactor: 1.5),
@@ -39,7 +38,14 @@ class FinishDialog extends AlertDialog {
       ),
       actions: [
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
+            if (Category.short != category) {
+              return;
+            }
+            if (!isSignin) {
+              return;
+            }
+            await recordViewModel.insert(speed);
             Navigator.of(context)
                 .pushNamedAndRemoveUntil('/', (route) => false);
           },

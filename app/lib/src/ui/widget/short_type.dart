@@ -1,8 +1,12 @@
-import 'package:app/src/ui/widget/count.dart';
-import 'package:app/src/ui/widget/finish_dialog.dart';
+import 'package:app/src/bloc/count/count_bloc.dart';
+import 'package:app/src/bloc/short/short_bloc.dart';
+import 'package:app/src/data/repository/short_repository.dart';
+import 'package:app/src/models/short_model.dart';
 import 'package:app/src/ui/widget/record.dart';
+import 'package:app/src/viewmodel/count_view_model.dart';
 import 'package:app/src/viewmodel/short_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ShortType extends StatefulWidget {
   const ShortType({super.key});
@@ -12,15 +16,12 @@ class ShortType extends StatefulWidget {
 }
 
 class _ShortTypeState extends State<ShortType> {
-  final ShortViewModel _shortViewModel = ShortViewModel();
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focus = FocusNode();
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _shortViewModel.init();
   }
 
   @override
@@ -28,15 +29,23 @@ class _ShortTypeState extends State<ShortType> {
     super.dispose();
     _textEditingController.dispose();
     _focus.unfocus();
-    _shortViewModel.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: _shortViewModel.shortStream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) {
+    ShortRepository shortRepository = ShortRepository();
+    ShortViewModel shortViewModel = ShortViewModel(
+      shortBloc: BlocProvider.of<ShortBloc>(context),
+      shortRepository: shortRepository,
+    );
+    shortViewModel.init();
+    CountViewModel countViewModel = CountViewModel(
+      countBloc: BlocProvider.of<CountBloc>(context),
+    );
+    countViewModel.setShort();
+    return BlocBuilder<ShortBloc, ShortModel>(
+      builder: (BuildContext context, ShortModel state) {
+        if (state.list.isEmpty) {
           return const CircularProgressIndicator();
         }
         return Column(
@@ -47,7 +56,7 @@ class _ShortTypeState extends State<ShortType> {
             Flexible(
               flex: 1,
               child: Text(
-                snapshot.data[0].short as String,
+                state.list[0].short,
                 textScaleFactor: 1.5,
               ),
             ),
@@ -62,18 +71,11 @@ class _ShortTypeState extends State<ShortType> {
                   if (!stopwatch.isRunning) {
                     stopwatch.start();
                   }
-                  if (_textEditingController.text == snapshot.data[0].short) {
-                    await _shortViewModel.next();
-                    countViewModel.increment = null;
-                    countViewModel.total = _textEditingController.text.length;
+                  if (_textEditingController.text == state.list[0].short) {
+                    await shortViewModel.next();
+                    countViewModel
+                        .increment(_textEditingController.text.length);
                     _textEditingController.text = '';
-                  }
-                  if (countViewModel.isMax()) {
-                    showDialog<AlertDialog>(
-                      barrierDismissible: false,
-                      context: scaffoldKey.currentContext ?? context,
-                      builder: (BuildContext context) => const FinishDialog(),
-                    );
                   }
                 },
               ),
@@ -81,7 +83,7 @@ class _ShortTypeState extends State<ShortType> {
             Flexible(
               flex: 1,
               child: Text(
-                'NEXT: ${snapshot.data[1].short}',
+                'NEXT: ${state.list[1].short}',
                 style: const TextStyle(color: Colors.grey),
                 textScaleFactor: 1.5,
               ),

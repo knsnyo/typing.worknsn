@@ -1,4 +1,5 @@
 import 'package:app/src/bloc/user/user_bloc.dart';
+import 'package:app/src/data/repository/user_repository.dart';
 import 'package:app/src/utils/title_bar.dart';
 import 'package:app/src/utils/screen_padding.dart';
 import 'package:app/src/utils/snack_bar.dart';
@@ -28,8 +29,11 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
-    UserViewModel userViewModel =
-        UserViewModel(userBloc: BlocProvider.of<UserBloc>(context));
+    UserRepository userRepository = UserRepository();
+    UserViewModel userViewModel = UserViewModel(
+      userBloc: BlocProvider.of<UserBloc>(context),
+      userRepository: userRepository,
+    );
     return Scaffold(
       appBar: titleBar(),
       body: Container(

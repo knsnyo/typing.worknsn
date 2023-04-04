@@ -1,8 +1,12 @@
-import 'package:app/src/ui/widget/count.dart';
-import 'package:app/src/ui/widget/finish_dialog.dart';
+import 'package:app/src/bloc/count/count_bloc.dart';
+import 'package:app/src/bloc/word/word_bloc.dart';
+import 'package:app/src/data/repository/word_repository.dart';
+import 'package:app/src/models/word_model.dart';
 import 'package:app/src/ui/widget/record.dart';
+import 'package:app/src/viewmodel/count_view_model.dart';
 import 'package:app/src/viewmodel/word_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Word extends StatefulWidget {
   const Word({super.key});
@@ -12,27 +16,30 @@ class Word extends StatefulWidget {
 }
 
 class _WordState extends State<Word> {
-  final WordViewModel _wordViewModel = WordViewModel();
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focus = FocusNode();
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void dispose() {
     super.dispose();
     _textEditingController.dispose();
     _focus.unfocus();
-    _wordViewModel.dispose();
-    countViewModel.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _wordViewModel.init();
-    return StreamBuilder(
-      stream: _wordViewModel.wordStream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) {
+    WordRepository wordRepository = WordRepository();
+    WordViewModel wordViewModel = WordViewModel(
+      wordBloc: BlocProvider.of<WordBloc>(context),
+      wordRepository: wordRepository,
+    );
+    wordViewModel.init();
+    CountViewModel countViewModel = CountViewModel(
+      countBloc: BlocProvider.of<CountBloc>(context),
+    );
+    return BlocBuilder<WordBloc, WordModel>(
+      builder: (BuildContext context, WordModel state) {
+        if (state.list.isEmpty) {
           return const CircularProgressIndicator();
         }
         return Row(
@@ -44,7 +51,7 @@ class _WordState extends State<Word> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text(snapshot.data[0].word as String, textScaleFactor: 3),
+                  Text(state.list[0].word, textScaleFactor: 3),
                   TextFormField(
                     autofocus: true,
                     focusNode: _focus,
@@ -54,21 +61,11 @@ class _WordState extends State<Word> {
                       if (!stopwatch.isRunning) {
                         stopwatch.start();
                       }
-                      if (_textEditingController.text ==
-                          snapshot.data[0].word) {
-                        await _wordViewModel.next();
-                        countViewModel.increment = null;
-                        countViewModel.total =
-                            _textEditingController.text.length;
+                      if (_textEditingController.text == state.list[0].word) {
+                        await wordViewModel.next();
+                        countViewModel
+                            .increment(_textEditingController.text.length);
                         _textEditingController.text = '';
-                      }
-                      if (countViewModel.isMax()) {
-                        showDialog<AlertDialog>(
-                          barrierDismissible: false,
-                          context: scaffoldKey.currentContext ?? context,
-                          builder: (BuildContext context) =>
-                              const FinishDialog(),
-                        );
                       }
                     },
                   )
@@ -77,7 +74,7 @@ class _WordState extends State<Word> {
             ),
             Flexible(
               child: Text(
-                snapshot.data[1].word as String,
+                state.list[1].word,
                 textScaleFactor: 3,
                 style: const TextStyle(color: Colors.grey),
               ),
