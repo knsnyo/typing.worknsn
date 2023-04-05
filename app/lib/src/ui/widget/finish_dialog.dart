@@ -20,9 +20,8 @@ class FinishDialog extends AlertDialog {
       recordRepository: recordRepository,
     );
     Category category = BlocProvider.of<CountBloc>(context).state.category;
-    int total = BlocProvider.of<CountBloc>(context).state.total;
-    int time = 100;
-    int speed = (total / time * 60).round();
+    int yourTypeTotal = BlocProvider.of<CountBloc>(context).state.total;
+    int speed = (yourTypeTotal / total * 60).round();
     bool isSignin = BlocProvider.of<UserBloc>(context).state.user;
     return AlertDialog(
       content: Column(

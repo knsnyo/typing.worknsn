@@ -99,23 +99,15 @@ class _SignupState extends State<Signup> {
                         }
                         String id = _idController.text;
                         String password = _passwordController.text;
-                        try {
-                          Response res =
-                              await userViewModel.signup(id, password);
-                          if (!mounted) {
-                            return;
-                          }
-                          if (201 != res.statusCode) {
-                            throw '';
-                          }
+                        bool result = await userViewModel.signup(id, password);
+                        if (result) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(successSnackbar('Sign Up Success'));
                           Navigator.pop(context);
-                        } catch (err) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(failSnackbar('Sign Up Fail'));
                           return;
                         }
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(failSnackbar('Sign Up Fail'));
                       },
                       child: const Text('Sign up', textScaleFactor: 1.0),
                     ),

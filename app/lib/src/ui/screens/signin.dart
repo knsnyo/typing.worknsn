@@ -100,21 +100,16 @@ class _SigninState extends State<Signin> {
                         }
                         String id = _idController.text;
                         String password = _passwordController.text;
-                        try {
-                          Response res =
-                              await userViewModel.signin(id, password);
-                          if (200 != res.statusCode) {
-                            throw '';
-                          }
+                        bool result = await userViewModel.signin(id, password);
+                        if (result) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(successSnackbar('Sign in Success'));
                           Navigator.of(context)
                               .pushNamedAndRemoveUntil('/', (route) => false);
-                        } catch (err) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(failSnackbar('Sign in Failure'));
                           return;
                         }
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(failSnackbar('Sign in Failure'));
                       },
                       child: const Text('Sign in', textScaleFactor: 1.0),
                     ),

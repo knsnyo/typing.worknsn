@@ -1,14 +1,12 @@
+import 'package:app/src/constants/constants.dart';
 import 'package:app/src/data/models/word.dart';
 import 'package:app/src/utils/custom_error.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class WordRepository {
-  final String url = dotenv.env['WORD_URL']!;
-
   Future<List<Word>> init() async {
     try {
-      Response res = await Dio().get<dynamic>('$url/init');
+      Response res = await Dio().get<dynamic>('$wordUrl/init');
       List<Word> words = (res.data as List)
           .map<Word>(
               (dynamic json) => Word.fromJson(json as Map<String, dynamic>))
@@ -21,7 +19,7 @@ class WordRepository {
 
   Future<Word> get() async {
     try {
-      Response res = await Dio().get<dynamic>(url);
+      Response res = await Dio().get<dynamic>(wordUrl);
       Word word = Word.fromJson(res.data as Map<String, dynamic>);
       return word;
     } catch (err) {

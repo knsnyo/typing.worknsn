@@ -15,7 +15,7 @@ class UserViewModel {
   })  : _userBloc = userBloc,
         _userRepository = userRepository;
 
-  Future<void> auto() async {
+  Future<bool> auto() async {
     try {
       await checkTokens();
       Map<String, String> tokens = await getTokens();
@@ -24,25 +24,26 @@ class UserViewModel {
       String refreshToken = res.data['refreshToken'] as String;
       await setTokens(accessToken, refreshToken);
       _userBloc.add(UserSigninEvent());
+      return true;
     } catch (err) {
-      throw ViewModelError(message: 'UserViewModel.auto()');
+      return false;
     }
   }
 
-  Future<Response> signup(String id, String password) async {
+  Future<bool> signup(String id, String password) async {
     try {
       Map<String, String> user = {'id': id, 'password': password};
       Response res = await _userRepository.signup(user);
       if (201 != res.statusCode) {
         throw ViewModelError(message: 'UserViewModel.signup()');
       }
-      return res;
+      return true;
     } catch (err) {
-      throw ViewModelError(message: 'UserViewModel.signup()');
+      return false;
     }
   }
 
-  Future<Response> signin(String id, String password) async {
+  Future<bool> signin(String id, String password) async {
     Map<String, String> user = {'id': id, 'password': password};
     try {
       Response res = await _userRepository.signin(user);
@@ -50,18 +51,19 @@ class UserViewModel {
       String refreshToken = res.data['refreshToken'] as String;
       await setTokens(accessToken, refreshToken);
       _userBloc.add(UserSigninEvent());
-      return res;
+      return true;
     } catch (err) {
-      throw ViewModelError(message: 'UserViewModel.signin()');
+      return false;
     }
   }
 
-  Future<void> signout() async {
+  Future<bool> signout() async {
     try {
       await removeTokens();
       _userBloc.add(UserSignoutEvent());
+      return true;
     } catch (err) {
-      throw ViewModelError(message: 'UserViewModel.signout()');
+      return false;
     }
   }
 }

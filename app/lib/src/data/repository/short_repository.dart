@@ -1,14 +1,12 @@
+import 'package:app/src/constants/constants.dart';
 import 'package:app/src/data/models/short.dart';
 import 'package:app/src/utils/custom_error.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ShortRepository {
-  final String url = dotenv.env['SHORT_URL']!;
-
   Future<List<Short>> init() async {
     try {
-      Response res = await Dio().get<dynamic>('$url/init');
+      Response res = await Dio().get<dynamic>('$shortUrl/init');
       List<Short> shorts = (res.data as List)
           .map<Short>(
               (dynamic json) => Short.fromJson(json as Map<String, dynamic>))
@@ -21,7 +19,7 @@ class ShortRepository {
 
   Future<Short> get() async {
     try {
-      Response res = await Dio().get<dynamic>(url);
+      Response res = await Dio().get<dynamic>(shortUrl);
       Short short = Short.fromJson(res.data as Map<String, dynamic>);
       return short;
     } catch (err) {
