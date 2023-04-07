@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:app/src/bloc/user/user_bloc.dart';
+import 'package:app/src/data/models/user.dart';
 import 'package:app/src/data/repository/user_repository.dart';
 import 'package:app/src/storage/storage.dart';
 import 'package:app/src/utils/custom_error.dart';
@@ -20,8 +21,9 @@ class UserViewModel {
       await checkTokens();
       Map<String, String> tokens = await getTokens();
       Response res = await _userRepository.auto(tokens);
-      String accessToken = res.data['accessToken'] as String;
-      String refreshToken = res.data['refreshToken'] as String;
+      User newUser = User.fromJson(res.data as Map<String, dynamic>);
+      String accessToken = newUser.accessToken;
+      String refreshToken = newUser.refreshToken;
       await setTokens(accessToken, refreshToken);
       _userBloc.add(UserSigninEvent());
       return true;
@@ -31,8 +33,8 @@ class UserViewModel {
   }
 
   Future<bool> signup(String id, String password) async {
+    Map<String, String> user = {'id': id, 'password': password};
     try {
-      Map<String, String> user = {'id': id, 'password': password};
       Response res = await _userRepository.signup(user);
       if (201 != res.statusCode) {
         throw ViewModelError(message: 'UserViewModel.signup()');
@@ -47,8 +49,9 @@ class UserViewModel {
     Map<String, String> user = {'id': id, 'password': password};
     try {
       Response res = await _userRepository.signin(user);
-      String accessToken = res.data['accessToken'] as String;
-      String refreshToken = res.data['refreshToken'] as String;
+      User newUser = User.fromJson(res.data as Map<String, dynamic>);
+      String accessToken = newUser.accessToken;
+      String refreshToken = newUser.refreshToken;
       await setTokens(accessToken, refreshToken);
       _userBloc.add(UserSigninEvent());
       return true;

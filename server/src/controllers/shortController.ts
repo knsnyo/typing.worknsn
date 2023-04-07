@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import StatusCode from '@/utils/StatusCode';
 import { IShort } from '@/types/types';
 import shortService from '@/services/shortService';
-import errorCatch from '@/utils/errJson';
+import errorCatch from '@/utils/errCatch';
 
 const shortController = {
   insert: async (req: Request, res: Response): Promise<Response> => {

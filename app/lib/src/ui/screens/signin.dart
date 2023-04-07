@@ -5,7 +5,6 @@ import 'package:app/src/utils/title_bar.dart';
 import 'package:app/src/utils/screen_padding.dart';
 import 'package:app/src/utils/snack_bar.dart';
 import 'package:app/src/viewmodel/user_view_model.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

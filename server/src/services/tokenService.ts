@@ -1,4 +1,4 @@
-import { JWT_ACCESS, JWT_REFRESH } from '@/constants/constatns';
+import { JWT_ACCESS, JWT_REFRESH } from '@/constants/constants';
 import { BodyError, TokenError } from '@/utils/Error';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
 

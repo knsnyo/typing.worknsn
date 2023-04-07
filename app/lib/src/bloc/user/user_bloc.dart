@@ -5,9 +5,9 @@ part 'user_event.dart';
 
 class UserBloc extends Bloc<UserEvent, UserModel> {
   UserBloc() : super(UserModel(user: false)) {
-    on<UserSigninEvent>((UserEvent event, Emitter<UserModel> emit) =>
+    on<UserSigninEvent>((UserSigninEvent event, Emitter<UserModel> emit) =>
         emit(UserModel(user: true)));
-    on<UserSignoutEvent>((UserEvent event, Emitter<UserModel> emit) =>
+    on<UserSignoutEvent>((UserSignoutEvent event, Emitter<UserModel> emit) =>
         emit(UserModel(user: false)));
   }
 }

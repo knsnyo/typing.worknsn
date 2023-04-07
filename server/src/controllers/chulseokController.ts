@@ -1,6 +1,6 @@
 import chulseokService from '@/services/chulseokService';
 import { IChulseok } from '@/types/types';
-import errorCatch from '@/utils/errJson';
+import errorCatch from '@/utils/errCatch';
 import SC from '@/utils/StatusCode';
 import { Request, Response } from 'express';
 

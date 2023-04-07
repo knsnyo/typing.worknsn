@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import StatusCode from '@/utils/StatusCode';
 import { IUser } from '@/types/types';
 import userService from '@/services/userService';
-import errorCatch from '@/utils/errJson';
+import errorCatch from '@/utils/errCatch';
 import tokenService from '@/services/tokenService';
 import { JwtPayload } from 'jsonwebtoken';
 

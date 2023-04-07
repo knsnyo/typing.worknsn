@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import StatusCode from '@/utils/StatusCode';
 import positionService from '@/services/positionService';
-import errorCatch from '@/utils/errJson';
+import errorCatch from '@/utils/errCatch';
 import { IPosition } from '@/types/types';
 
 const positionController = {

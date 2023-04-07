@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import StatusCode from '@/utils/StatusCode';
 import { IWord } from '@/types/types';
 import wordService from '@/services/wordService';
-import errorCatch from '@/utils/errJson';
+import errorCatch from '@/utils/errCatch';
 
 const wordController = {
   insert: async (req: Request, res: Response): Promise<Response> => {

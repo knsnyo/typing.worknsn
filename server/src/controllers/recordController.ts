@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import StatusCode from '@/utils/StatusCode';
 import { IRecord } from '@/types/types';
 import recordService from '@/services/recordService';
-import errorCatch from '@/utils/errJson';
+import errorCatch from '@/utils/errCatch';
 
 const recordController = {
   insert: async (req: Request, res: Response): Promise<Response> => {

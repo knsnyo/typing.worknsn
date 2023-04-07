@@ -1,5 +1,5 @@
 import { createPool, Pool } from 'mysql2/promise';
-import { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } from '@/constants/constatns';
+import { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } from '@/constants/constants';
 import { DBError } from '@/utils/Error';
 import { IConfig } from '@/types/types';
 
