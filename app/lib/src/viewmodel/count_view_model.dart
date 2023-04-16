@@ -5,6 +5,10 @@ class CountViewModel {
 
   CountViewModel({required CountBloc countBloc}) : _countBloc = countBloc;
 
+  void init() {
+    _countBloc.add(CountInitEvent());
+  }
+
   void setPosition() {
     _countBloc.add(CountPositionEvent());
   }

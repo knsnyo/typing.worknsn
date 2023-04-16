@@ -5,6 +5,7 @@ import 'package:app/src/data/repository/record_repository.dart';
 import 'package:app/src/models/count_model.dart';
 import 'package:app/src/ui/widget/record.dart';
 import 'package:app/src/utils/time_format.dart';
+import 'package:app/src/viewmodel/count_view_model.dart';
 import 'package:app/src/viewmodel/record_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,8 @@ class FinishDialog extends AlertDialog {
 
   @override
   Widget build(BuildContext context) {
+    CountViewModel countViewModel =
+        CountViewModel(countBloc: BlocProvider.of<CountBloc>(context));
     RecordRepository recordRepository = RecordRepository();
     RecordViewModel recordViewModel = RecordViewModel(
       recordBloc: BlocProvider.of<RecordBloc>(context),
@@ -38,13 +41,13 @@ class FinishDialog extends AlertDialog {
       actions: [
         ElevatedButton(
           onPressed: () async {
-            if (Category.short != category) {
-              return;
-            }
             if (!isSignin) {
               return;
             }
-            await recordViewModel.insert(speed);
+            if (Category.short == category) {
+              await recordViewModel.insert(speed);
+            }
+            countViewModel.init();
             Navigator.of(context)
                 .pushNamedAndRemoveUntil('/', (route) => false);
           },

@@ -16,11 +16,12 @@ class Count extends StatelessWidget {
         int max = state.max;
         if (0 != count && 0 != max && count == max) {
           WidgetsBinding.instance.addPostFrameCallback(
-              (Duration timeStamp) => showDialog<AlertDialog>(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (BuildContext context) => const FinishDialog(),
-                  ));
+            (Duration timeStamp) => showDialog<AlertDialog>(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) => const FinishDialog(),
+            ),
+          );
         }
         return Column(
           mainAxisSize: MainAxisSize.max,

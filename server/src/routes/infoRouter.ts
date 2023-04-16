@@ -8,6 +8,6 @@ const infoRouter: Router = Router();
 infoRouter.use(Auth);
 infoRouter.route('/info/records').get(recordController.getInfo).post(recordController.insert);
 infoRouter.route('/info/chulseoks').get(chulseokController.getList);
-// infoRouter.route('/min-max').get();
+// infoRouter.route('/avg-max').get();
 
 export default infoRouter;
